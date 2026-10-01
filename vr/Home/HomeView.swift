@@ -115,9 +115,13 @@ struct HomeView: View {
         let target = CGPoint(x: walletCoinFrame.minX + 9, y: walletCoinFrame.midY)
         let origin = CGPoint(x: source.minX + 9, y: source.midY)
         let batch = (flights.map(\.id).max() ?? 0) + 1
-        let launched = (0..<count).map { i in
-            CoinFlight(id: batch * 100 + i, from: origin, to: target, delay: Double(i) * 0.07,
-                       spread: CGFloat((i * 37) % 61 - 30), lift: CGFloat(18 + (i * 23) % 26))
+        var launched: [CoinFlight] = []
+        for i in 0..<count {
+            let spread: Int = (i * 37) % 61 - 30
+            let lift: Int = 18 + (i * 23) % 26
+            let delay: Double = Double(i) * 0.07
+            launched.append(CoinFlight(id: batch * 100 + i, from: origin, to: target, delay: delay,
+                                       spread: CGFloat(spread), lift: CGFloat(lift)))
         }
         flights += launched
         Task { @MainActor in
