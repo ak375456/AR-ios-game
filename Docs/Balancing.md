@@ -27,8 +27,8 @@ All 27 cars cost 194,515 coins, and every part at level 5 on all 28 cars costs
 Completing every mission once pays 37,035, about 14% of that. Contracts pay the
 rest, plus dailies and road coins. In the economy simulation an average player
 owns every car after about 40-44 hours of driving and has every part maxed after
-about 56-62 hours: a month at roughly 2 hours a day. Newcomers take longer and
-skilled players less (see EconomyReport.md, "Completing everything"). Cars carry
+about 58-63 hours: a month at roughly 2 hours a day. Newcomers take about 83-95
+hours and skilled players 45-49 (see EconomyReport.md, "Completing everything"). Cars carry
 about three quarters of the cost, so new cars keep arriving through most of the
 month instead of all landing in the first week, while car 2 still arrives about
 2 minutes in. Prices in the table below are the shipping prices.
