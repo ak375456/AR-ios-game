@@ -7,10 +7,11 @@ enum ProgressionCatalog {
         "estate-4x-4", "beach-buggy", "banana-kart", "city-taxi", "sedan-sports", "patrol-car",
         "hot-hatch", "rotary-coupe", "eighties-wedge", "roadster", "grand-tourer", "pony-car",
         "track-coupe", "muscle-coupe", "eighties-icon", "supercar", "racer"]
-    /// Shared dial on every price. 0.0856 makes all 27 cars plus every part at
-    /// level 5 cost 37,010 coins, just under the 37,035 that completing every
+    /// Shared dial on every price. 0.1088 makes all 27 cars plus every part at
+    /// level 5 cost 47,035 coins, exactly 10,000 more than completing every
     /// mission pays (career 11,575 + chapter bonuses 5,500 + mastery 19,960).
-    static let economyScale = 0.0856
+    /// Contracts, dailies and road coins cover the rest.
+    static let economyScale = 0.1088
     /// Relative knobs (1 = the original prices) before `economyScale`.
     static let carPriceScale = 2.5 * economyScale
     static let partPriceScale = 2.2 * economyScale
