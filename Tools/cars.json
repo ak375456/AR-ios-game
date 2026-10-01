@@ -1,0 +1,2616 @@
+[
+  {
+    "id": "sedan-sports",
+    "asset": "SedanSports",
+    "display": "Sports Sedan",
+    "tagline": "Even-handed. Good place to start.",
+    "class": "sedan",
+    "length": 0.42,
+    "texture": "SedanSportsPaint",
+    "textureExt": "png",
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.318,
+      "rgb": [
+        0.9264,
+        0.3888,
+        0.2732
+      ],
+      "hue": 10.6,
+      "saturation": 0.705,
+      "brightness": 0.926,
+      "textured": true
+    },
+    "report": {
+      "source": "sedan-sports.glb",
+      "asset": "SedanSports",
+      "nodes": 6,
+      "triangles": 2088,
+      "materials": 1,
+      "textures": [
+        "colormap.png"
+      ],
+      "wheels": [
+        {
+          "name": "wheel-back-right",
+          "recentred": true,
+          "centre": [
+            -0.425,
+            0.3,
+            -0.66
+          ],
+          "radius": 0.3,
+          "width": 0.35
+        },
+        {
+          "name": "wheel-back-left",
+          "recentred": true,
+          "centre": [
+            0.425,
+            0.3,
+            -0.66
+          ],
+          "radius": 0.3,
+          "width": 0.35
+        },
+        {
+          "name": "wheel-front-left",
+          "recentred": true,
+          "centre": [
+            0.425,
+            0.3,
+            0.66
+          ],
+          "radius": 0.3,
+          "width": 0.35
+        },
+        {
+          "name": "wheel-front-right",
+          "recentred": true,
+          "centre": [
+            -0.425,
+            0.3,
+            0.66
+          ],
+          "radius": 0.3,
+          "width": 0.35
+        }
+      ],
+      "bounds": {
+        "min": [
+          -0.65,
+          -0.0,
+          -1.3
+        ],
+        "max": [
+          0.65,
+          1.1,
+          1.25
+        ],
+        "size": [
+          1.3,
+          1.1,
+          2.55
+        ],
+        "orientedSize": [
+          1.3,
+          1.08978,
+          2.55
+        ]
+      },
+      "sizeKB": 82,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.318,
+        "rgb": [
+          0.9264,
+          0.3888,
+          0.2732
+        ],
+        "hue": 10.6,
+        "saturation": 0.705,
+        "brightness": 0.926,
+        "textured": true
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 1.485071,
+        "rearRed": 3.078779,
+        "suggestFlip": false,
+        "confidence": 0.349
+      }
+    }
+  },
+  {
+    "id": "hot-hatch",
+    "asset": "HotHatch",
+    "display": "Hot Hatch",
+    "tagline": "Loose rear end. Built to slide.",
+    "class": "drift",
+    "length": 0.4,
+    "texture": "HotHatchPaint",
+    "textureExt": "png",
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.403,
+      "rgb": [
+        0.2406,
+        0.6541,
+        0.4775
+      ],
+      "hue": 154.4,
+      "saturation": 0.632,
+      "brightness": 0.654,
+      "textured": true
+    },
+    "report": {
+      "source": "hatchback-sports.glb",
+      "asset": "HotHatch",
+      "nodes": 5,
+      "triangles": 2088,
+      "materials": 1,
+      "textures": [
+        "colormap.png"
+      ],
+      "wheels": [
+        {
+          "name": "wheel-front-right",
+          "recentred": true,
+          "centre": [
+            -0.425,
+            0.3,
+            0.81
+          ],
+          "radius": 0.3,
+          "width": 0.35
+        },
+        {
+          "name": "wheel-front-left",
+          "recentred": true,
+          "centre": [
+            0.425,
+            0.3,
+            0.81
+          ],
+          "radius": 0.3,
+          "width": 0.35
+        },
+        {
+          "name": "wheel-back-right",
+          "recentred": true,
+          "centre": [
+            -0.425,
+            0.3,
+            -0.81
+          ],
+          "radius": 0.3,
+          "width": 0.35
+        },
+        {
+          "name": "wheel-back-left",
+          "recentred": true,
+          "centre": [
+            0.425,
+            0.3,
+            -0.81
+          ],
+          "radius": 0.3,
+          "width": 0.35
+        }
+      ],
+      "bounds": {
+        "min": [
+          -0.65,
+          -0.0,
+          -1.45
+        ],
+        "max": [
+          0.65,
+          1.1,
+          1.4
+        ],
+        "size": [
+          1.3,
+          1.1,
+          2.85
+        ],
+        "orientedSize": [
+          1.3,
+          1.08978,
+          2.85
+        ]
+      },
+      "sizeKB": 95,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.403,
+        "rgb": [
+          0.2406,
+          0.6541,
+          0.4775
+        ],
+        "hue": 154.4,
+        "saturation": 0.632,
+        "brightness": 0.654,
+        "textured": true
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.04,
+        "suggestFlip": false,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "racer",
+    "asset": "Racer",
+    "display": "Open Wheeler",
+    "tagline": "Fastest thing here. Hates tight corners.",
+    "class": "openWheel",
+    "length": 0.46,
+    "texture": "RacerPaint",
+    "textureExt": "png",
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.464,
+      "rgb": [
+        0.8789,
+        0.3624,
+        0.2888
+      ],
+      "hue": 7.5,
+      "saturation": 0.671,
+      "brightness": 0.879,
+      "textured": true
+    },
+    "report": {
+      "source": "race.glb",
+      "asset": "Racer",
+      "nodes": 5,
+      "triangles": 1952,
+      "materials": 1,
+      "textures": [
+        "colormap.png"
+      ],
+      "wheels": [
+        {
+          "name": "wheel-front-left",
+          "recentred": true,
+          "centre": [
+            0.5,
+            0.3,
+            0.63989
+          ],
+          "radius": 0.3,
+          "width": 0.3
+        },
+        {
+          "name": "wheel-front-right",
+          "recentred": true,
+          "centre": [
+            -0.5,
+            0.3,
+            0.63989
+          ],
+          "radius": 0.3,
+          "width": 0.3
+        },
+        {
+          "name": "wheel-back-left",
+          "recentred": true,
+          "centre": [
+            0.5,
+            0.3,
+            -0.88011
+          ],
+          "radius": 0.3,
+          "width": 0.3
+        },
+        {
+          "name": "wheel-back-right",
+          "recentred": true,
+          "centre": [
+            -0.5,
+            0.3,
+            -0.88011
+          ],
+          "radius": 0.3,
+          "width": 0.3
+        }
+      ],
+      "bounds": {
+        "min": [
+          -0.65,
+          -0.0,
+          -1.27989
+        ],
+        "max": [
+          0.65,
+          0.73254,
+          1.27989
+        ],
+        "size": [
+          1.3,
+          0.73254,
+          2.55977
+        ],
+        "orientedSize": [
+          1.3,
+          0.73254,
+          2.55977
+        ]
+      },
+      "sizeKB": 75,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.464,
+        "rgb": [
+          0.8789,
+          0.3624,
+          0.2888
+        ],
+        "hue": 7.5,
+        "saturation": 0.671,
+        "brightness": 0.879,
+        "textured": true
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 1.038893,
+        "rearRed": 2.37472,
+        "suggestFlip": false,
+        "confidence": 0.391
+      }
+    }
+  },
+  {
+    "id": "supercar",
+    "asset": "Supercar",
+    "display": "Apex GT",
+    "tagline": "Enormous power. Respect it.",
+    "class": "supercar",
+    "length": 0.44,
+    "texture": "SupercarPaint",
+    "textureExt": "jpg",
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.212,
+      "rgb": [
+        0.9771,
+        0.723,
+        0.0174
+      ],
+      "hue": 44.1,
+      "saturation": 0.982,
+      "brightness": 0.977,
+      "textured": true
+    },
+    "report": {
+      "source": "CAR Model by Ignition Labs - 5zUWP5UsLg-.glb",
+      "asset": "Supercar",
+      "nodes": 6,
+      "triangles": 10252,
+      "materials": 2,
+      "textures": [
+        "Lamborginhi_Aventador_diffuse.jpg"
+      ],
+      "wheels": [
+        {
+          "name": "Lamborghini_Aventador_Wheel_FL",
+          "recentred": true,
+          "centre": [
+            65.8876,
+            34.599,
+            99.4388
+          ],
+          "radius": 34.5587,
+          "width": 30.5014
+        },
+        {
+          "name": "Lamborghini_Aventador_Wheel_FR",
+          "recentred": true,
+          "centre": [
+            -104.9705,
+            34.599,
+            99.4388
+          ],
+          "radius": 34.5587,
+          "width": 30.5014
+        },
+        {
+          "name": "Lamborghini_Aventador_Wheel_RL",
+          "recentred": true,
+          "centre": [
+            65.88755,
+            36.41615,
+            -175.46815
+          ],
+          "radius": 36.37585,
+          "width": 32.1053
+        },
+        {
+          "name": "Lamborghini_Aventador_Wheel_RR",
+          "recentred": true,
+          "centre": [
+            -104.97055,
+            36.41615,
+            -175.46815
+          ],
+          "radius": 36.37585,
+          "width": 32.1053
+        }
+      ],
+      "bounds": {
+        "min": [
+          -134.6429,
+          0.0404,
+          -271.76929
+        ],
+        "max": [
+          95.5599,
+          117.5937,
+          217.6714
+        ],
+        "size": [
+          230.2028,
+          117.5533,
+          489.44069
+        ],
+        "orientedSize": [
+          227.7477,
+          116.674,
+          486.74759
+        ]
+      },
+      "sizeKB": 376,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.212,
+        "rgb": [
+          0.9771,
+          0.723,
+          0.0174
+        ],
+        "hue": 44.1,
+        "saturation": 0.982,
+        "brightness": 0.977,
+        "textured": true
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 452.330116,
+        "suggestFlip": false,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "eighties-wedge",
+    "asset": "EightiesWedge",
+    "display": "80s Car",
+    "tagline": "All angles and attitude.",
+    "class": "sports",
+    "length": 0.44,
+    "texture": null,
+    "textureExt": null,
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.493,
+      "rgb": [
+        0.13,
+        0.04,
+        0.49
+      ],
+      "hue": 252.0,
+      "saturation": 0.918,
+      "brightness": 0.49,
+      "textured": false
+    },
+    "report": {
+      "source": "80s Car by Nick Ladd - 7tPSW5UYD20.glb",
+      "asset": "EightiesWedge",
+      "nodes": 51,
+      "triangles": 3735,
+      "materials": 9,
+      "textures": [],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -0.38402,
+          -0.20908,
+          -0.87928
+        ],
+        "max": [
+          0.40168,
+          0.28132,
+          0.64871
+        ],
+        "size": [
+          0.78569,
+          0.4904,
+          1.52799
+        ],
+        "orientedSize": [
+          0.78143,
+          0.4904,
+          1.53531
+        ]
+      },
+      "sizeKB": 223,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.493,
+        "rgb": [
+          0.13,
+          0.04,
+          0.49
+        ],
+        "hue": 252.0,
+        "saturation": 0.918,
+        "brightness": 0.49,
+        "textured": false
+      },
+      "orientation": [
+        "yawed -2deg",
+        "flipped"
+      ],
+      "facing": {
+        "frontRed": 0.108,
+        "rearRed": 0.0,
+        "suggestFlip": true,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "ambulance",
+    "asset": "Ambulance",
+    "display": "Ambulance",
+    "tagline": "Tall, heavy, surprisingly willing.",
+    "class": "van",
+    "length": 0.5,
+    "texture": "AmbulancePaint",
+    "textureExt": "png",
+    "paint": {},
+    "report": {
+      "source": "Ambulance by Poly by Google - beDwEv9UB7x.glb",
+      "asset": "Ambulance",
+      "nodes": 1,
+      "triangles": 2432,
+      "materials": 1,
+      "textures": [
+        "_1373_Ambulance.png"
+      ],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -21.94452,
+          0.00013,
+          -59.00289
+        ],
+        "max": [
+          21.94452,
+          46.99567,
+          39.67208
+        ],
+        "size": [
+          43.88905,
+          46.99554,
+          98.67497
+        ],
+        "orientedSize": [
+          44.53784,
+          46.99554,
+          98.24658
+        ]
+      },
+      "sizeKB": 48,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.092,
+        "rgb": [
+          0.902,
+          0.0392,
+          0.0392
+        ],
+        "hue": 0.0,
+        "saturation": 0.957,
+        "brightness": 0.902,
+        "textured": true
+      },
+      "orientation": [
+        "yawed 1deg"
+      ],
+      "facing": {
+        "frontRed": 750.66294,
+        "rearRed": 1053.427683,
+        "suggestFlip": false,
+        "confidence": 0.168
+      }
+    }
+  },
+  {
+    "id": "rust-bucket",
+    "asset": "RustBucket",
+    "display": "Rust Bucket",
+    "tagline": "Held together by optimism.",
+    "class": "classic",
+    "length": 0.45,
+    "texture": null,
+    "textureExt": null,
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.552,
+      "rgb": [
+        0.1139,
+        0.0698,
+        0.0354
+      ],
+      "hue": 26.3,
+      "saturation": 0.689,
+      "brightness": 0.114,
+      "textured": false
+    },
+    "report": {
+      "source": "Broken Car by Quaternius - Y67erogmR9.glb",
+      "asset": "RustBucket",
+      "nodes": 2,
+      "triangles": 5432,
+      "materials": 4,
+      "textures": [],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -1.32064,
+          -0.09803,
+          -2.54522
+        ],
+        "max": [
+          1.32064,
+          1.66225,
+          2.94855
+        ],
+        "size": [
+          2.64129,
+          1.76028,
+          5.49378
+        ],
+        "orientedSize": [
+          2.59138,
+          1.76028,
+          5.49378
+        ]
+      },
+      "sizeKB": 185,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.552,
+        "rgb": [
+          0.1139,
+          0.0698,
+          0.0354
+        ],
+        "hue": 26.3,
+        "saturation": 0.689,
+        "brightness": 0.114,
+        "textured": false
+      },
+      "orientation": [
+        "flipped"
+      ],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.0,
+        "suggestFlip": false,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "id": "muscle-coupe",
+    "asset": "MuscleCoupe",
+    "display": "Muscle Coupe",
+    "tagline": "Straight-line monster.",
+    "class": "sports",
+    "length": 0.46,
+    "texture": null,
+    "textureExt": null,
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.454,
+      "rgb": [
+        0.91,
+        0.05,
+        0.03
+      ],
+      "hue": 1.4,
+      "saturation": 0.967,
+      "brightness": 0.91,
+      "textured": false
+    },
+    "report": {
+      "source": "Camaro ZL1 2017 by Kris Tong - 7bF7UVAoYRG.glb",
+      "asset": "MuscleCoupe",
+      "nodes": 1,
+      "triangles": 4500,
+      "materials": 8,
+      "textures": [],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -0.35648,
+          -0.10413,
+          -0.31247
+        ],
+        "max": [
+          0.42737,
+          0.11857,
+          0.26833
+        ],
+        "size": [
+          0.78384,
+          0.2227,
+          0.5808
+        ],
+        "orientedSize": [
+          0.4081,
+          0.21743,
+          0.77318
+        ]
+      },
+      "sizeKB": 221,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.454,
+        "rgb": [
+          0.91,
+          0.05,
+          0.03
+        ],
+        "hue": 1.4,
+        "saturation": 0.967,
+        "brightness": 0.91,
+        "textured": false
+      },
+      "orientation": [
+        "yawed 64deg",
+        "flipped"
+      ],
+      "facing": {
+        "frontRed": 0.599168,
+        "rearRed": 0.439126,
+        "suggestFlip": false,
+        "confidence": 0.154
+      }
+    }
+  },
+  {
+    "id": "mini-hatch",
+    "asset": "MiniHatch",
+    "display": "Mini Hatch",
+    "tagline": "Tiny, eager, forgiving.",
+    "class": "compact",
+    "length": 0.36,
+    "texture": "MiniHatchPaint",
+    "textureExt": "png",
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.352,
+      "rgb": [
+        0.7882,
+        0.1287,
+        0.1652
+      ],
+      "hue": 356.7,
+      "saturation": 0.837,
+      "brightness": 0.788,
+      "textured": true
+    },
+    "report": {
+      "source": "Car Hatchback by Kay Lousberg - BG0KAhmGDt.glb",
+      "asset": "MiniHatch",
+      "nodes": 6,
+      "triangles": 1194,
+      "materials": 1,
+      "textures": [
+        "citybits_texture_png.png"
+      ],
+      "wheels": [
+        {
+          "name": "car_hatchback_wheel_front_left",
+          "recentred": false,
+          "centre": [
+            0.00176,
+            -0.00245,
+            0.00011
+          ],
+          "radius": 0.00072,
+          "width": 0.00061
+        },
+        {
+          "name": "car_hatchback_wheel_rear_left",
+          "recentred": false,
+          "centre": [
+            0.00176,
+            0.00256,
+            0.00011
+          ],
+          "radius": 0.00072,
+          "width": 0.00061
+        },
+        {
+          "name": "car_hatchback_wheel_front_right",
+          "recentred": false,
+          "centre": [
+            -0.00176,
+            -0.00245,
+            0.00011
+          ],
+          "radius": 0.00072,
+          "width": 0.00061
+        },
+        {
+          "name": "car_hatchback_wheel_rear_right",
+          "recentred": false,
+          "centre": [
+            -0.00176,
+            0.00256,
+            0.00011
+          ],
+          "radius": 0.00072,
+          "width": 0.00061
+        }
+      ],
+      "bounds": {
+        "min": [
+          -0.20948,
+          -0.06104,
+          -0.39534
+        ],
+        "max": [
+          0.20949,
+          0.30772,
+          0.41074
+        ],
+        "size": [
+          0.41896,
+          0.36876,
+          0.80607
+        ],
+        "orientedSize": [
+          0.4345,
+          0.36876,
+          0.81064
+        ]
+      },
+      "sizeKB": 73,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.352,
+        "rgb": [
+          0.7882,
+          0.1287,
+          0.1652
+        ],
+        "hue": 356.7,
+        "saturation": 0.837,
+        "brightness": 0.788,
+        "textured": true
+      },
+      "orientation": [
+        "yawed -1deg"
+      ],
+      "facing": {
+        "frontRed": 0.340719,
+        "rearRed": 0.370284,
+        "suggestFlip": false,
+        "confidence": 0.042
+      }
+    }
+  },
+  {
+    "id": "runabout",
+    "asset": "Runabout",
+    "display": "Runabout",
+    "tagline": "Cheerful little thing.",
+    "class": "compact",
+    "length": 0.4,
+    "texture": null,
+    "textureExt": null,
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.859,
+      "rgb": [
+        0.2783,
+        0.4317,
+        0.64
+      ],
+      "hue": 214.6,
+      "saturation": 0.565,
+      "brightness": 0.64,
+      "textured": false
+    },
+    "report": {
+      "source": "Car by Quaternius - Cz6yDaUcM9.glb",
+      "asset": "Runabout",
+      "nodes": 4,
+      "triangles": 2954,
+      "materials": 6,
+      "textures": [],
+      "wheels": [
+        {
+          "name": "NormalCar1_BackWheels_Cube.011",
+          "recentred": true,
+          "centre": [
+            0.00087,
+            0.26792,
+            -1.24326
+          ],
+          "radius": 0.26189,
+          "width": 1.5669
+        },
+        {
+          "name": "NormalCar1_FrontLeftWheel_Cube.007",
+          "recentred": true,
+          "centre": [
+            0.69064,
+            0.26792,
+            1.19587
+          ],
+          "radius": 0.26189,
+          "width": 0.19086
+        },
+        {
+          "name": "NormalCar1_FrontRightWheel_Cube.008",
+          "recentred": true,
+          "centre": [
+            -0.6889,
+            0.26792,
+            1.19587
+          ],
+          "radius": 0.26189,
+          "width": 0.19086
+        }
+      ],
+      "bounds": {
+        "min": [
+          -0.90368,
+          0.00603,
+          -2.10726
+        ],
+        "max": [
+          0.90368,
+          1.18261,
+          2.11345
+        ],
+        "size": [
+          1.80736,
+          1.17658,
+          4.22072
+        ],
+        "orientedSize": [
+          1.77071,
+          1.17658,
+          4.20302
+        ]
+      },
+      "sizeKB": 140,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.859,
+        "rgb": [
+          0.2783,
+          0.4317,
+          0.64
+        ],
+        "hue": 214.6,
+        "saturation": 0.565,
+        "brightness": 0.64,
+        "textured": false
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.078092,
+        "suggestFlip": false,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "beach-buggy",
+    "asset": "BeachBuggy",
+    "display": "Beach Buggy",
+    "tagline": "Open top, loose grip.",
+    "class": "offroad",
+    "length": 0.42,
+    "texture": null,
+    "textureExt": null,
+    "paint": {
+      "materialIndex": 3,
+      "areaShare": 0.471,
+      "rgb": [
+        0.0118,
+        0.6078,
+        0.898
+      ],
+      "hue": 199.6,
+      "saturation": 0.987,
+      "brightness": 0.898,
+      "textured": false
+    },
+    "report": {
+      "source": "Car by jeremy - bTcqWpYqeeM.glb",
+      "asset": "BeachBuggy",
+      "nodes": 1,
+      "triangles": 2243,
+      "materials": 7,
+      "textures": [],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -186.82213,
+          0.6083,
+          -109.07019
+        ],
+        "max": [
+          136.64821,
+          200.81279,
+          109.07017
+        ],
+        "size": [
+          323.47034,
+          200.20449,
+          218.14036
+        ],
+        "orientedSize": [
+          215.01922,
+          200.20449,
+          324.25855
+        ]
+      },
+      "sizeKB": 90,
+      "paint": {
+        "materialIndex": 3,
+        "areaShare": 0.471,
+        "rgb": [
+          0.0118,
+          0.6078,
+          0.898
+        ],
+        "hue": 199.6,
+        "saturation": 0.987,
+        "brightness": 0.898,
+        "textured": false
+      },
+      "orientation": [
+        "yawed -89deg",
+        "flipped"
+      ],
+      "facing": {
+        "frontRed": 1950.165937,
+        "rearRed": 0.0,
+        "suggestFlip": true,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "pony-car",
+    "asset": "PonyCar",
+    "display": "Pony Coupe",
+    "tagline": "Long bonnet, short patience.",
+    "class": "sports",
+    "length": 0.46,
+    "texture": null,
+    "textureExt": null,
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.506,
+      "rgb": [
+        0.3883,
+        0.0105,
+        0.0189
+      ],
+      "hue": 358.7,
+      "saturation": 0.973,
+      "brightness": 0.388,
+      "textured": false
+    },
+    "report": {
+      "source": "Chevrolet Camaro by PuKkBuMXDD - kVcKsd2dEk.glb",
+      "asset": "PonyCar",
+      "nodes": 12,
+      "triangles": 4548,
+      "materials": 17,
+      "textures": [],
+      "wheels": [
+        {
+          "name": "wheel_front_left",
+          "recentred": true,
+          "centre": [
+            0.00776,
+            -0.0173,
+            0.00571
+          ],
+          "radius": 0.00287,
+          "width": 0.00162
+        },
+        {
+          "name": "wheel_back_left",
+          "recentred": true,
+          "centre": [
+            0.00722,
+            0.00812,
+            0.00621
+          ],
+          "radius": 0.00287,
+          "width": 0.00162
+        },
+        {
+          "name": "wheel_back_right",
+          "recentred": true,
+          "centre": [
+            0.00814,
+            0.00812,
+            0.00621
+          ],
+          "radius": 0.00287,
+          "width": 0.00162
+        },
+        {
+          "name": "wheel_front_right",
+          "recentred": true,
+          "centre": [
+            0.00776,
+            -0.0173,
+            0.00571
+          ],
+          "radius": 0.00287,
+          "width": 0.00162
+        }
+      ],
+      "bounds": {
+        "min": [
+          -0.99449,
+          0.2841,
+          -1.48799
+        ],
+        "max": [
+          0.99449,
+          1.53896,
+          2.57775
+        ],
+        "size": [
+          1.98899,
+          1.25485,
+          4.06574
+        ],
+        "orientedSize": [
+          1.96836,
+          1.24673,
+          4.03976
+        ]
+      },
+      "sizeKB": 196,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.506,
+        "rgb": [
+          0.3883,
+          0.0105,
+          0.0189
+        ],
+        "hue": 358.7,
+        "saturation": 0.973,
+        "brightness": 0.388,
+        "textured": false
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 5.723685,
+        "rearRed": 5.615624,
+        "suggestFlip": false,
+        "confidence": 0.01
+      }
+    }
+  },
+  {
+    "id": "roadster",
+    "asset": "Roadster",
+    "display": "Roadster",
+    "tagline": "Light and neat through corners.",
+    "class": "sports",
+    "length": 0.43,
+    "texture": "RoadsterPaint",
+    "textureExt": "png",
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.37,
+      "rgb": [
+        0.7803,
+        0.2672,
+        0.3534
+      ],
+      "hue": 349.9,
+      "saturation": 0.658,
+      "brightness": 0.78,
+      "textured": true
+    },
+    "report": {
+      "source": "Convertible by Poly by Google - 8ACz9InIO0c.glb",
+      "asset": "Roadster",
+      "nodes": 11,
+      "triangles": 2716,
+      "materials": 2,
+      "textures": [
+        "Convertible_Texture.png"
+      ],
+      "wheels": [
+        {
+          "name": "Wheel_a2",
+          "recentred": true,
+          "centre": [
+            -30.0,
+            -28.29489,
+            55.00001
+          ],
+          "radius": 16.29012,
+          "width": 13.68369
+        },
+        {
+          "name": "Wheel_a3",
+          "recentred": true,
+          "centre": [
+            -30.0,
+            -28.29489,
+            -54.99999
+          ],
+          "radius": 16.29012,
+          "width": 13.68369
+        },
+        {
+          "name": "Wheel_a4",
+          "recentred": true,
+          "centre": [
+            30.0,
+            -28.29489,
+            -54.99999
+          ],
+          "radius": 16.29012,
+          "width": 13.68369
+        },
+        {
+          "name": "Wheel_a5",
+          "recentred": true,
+          "centre": [
+            30.0,
+            -28.29489,
+            55.00001
+          ],
+          "radius": 16.29012,
+          "width": 13.68369
+        }
+      ],
+      "bounds": {
+        "min": [
+          -46.71799,
+          -44.58501,
+          -102.49998
+        ],
+        "max": [
+          46.71799,
+          31.12152,
+          87.49998
+        ],
+        "size": [
+          93.43598,
+          75.70653,
+          189.99997
+        ],
+        "orientedSize": [
+          92.98357,
+          74.46652,
+          189.99997
+        ]
+      },
+      "sizeKB": 123,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.37,
+        "rgb": [
+          0.7803,
+          0.2672,
+          0.3534
+        ],
+        "hue": 349.9,
+        "saturation": 0.658,
+        "brightness": 0.78,
+        "textured": true
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.0,
+        "suggestFlip": false,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "id": "grand-tourer",
+    "asset": "GrandTourer",
+    "display": "Grand Tourer",
+    "tagline": "Fast in a relaxed sort of way.",
+    "class": "sports",
+    "length": 0.45,
+    "texture": "GrandTourerPaint",
+    "textureExt": "png",
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.223,
+      "rgb": [
+        0.02,
+        0.2211,
+        0.4112
+      ],
+      "hue": 209.2,
+      "saturation": 0.951,
+      "brightness": 0.411,
+      "textured": true
+    },
+    "report": {
+      "source": "Convertible by Poly by Google - dggOiBLYyuR.glb",
+      "asset": "GrandTourer",
+      "nodes": 1,
+      "triangles": 1671,
+      "materials": 1,
+      "textures": [
+        "Convertible_BaseColor.png"
+      ],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -2.15813,
+          0.0,
+          -4.99854
+        ],
+        "max": [
+          2.15813,
+          3.05554,
+          5.14307
+        ],
+        "size": [
+          4.31626,
+          3.05554,
+          10.14161
+        ],
+        "orientedSize": [
+          4.22738,
+          3.05554,
+          10.10479
+        ]
+      },
+      "sizeKB": 699,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.223,
+        "rgb": [
+          0.02,
+          0.2211,
+          0.4112
+        ],
+        "hue": 209.2,
+        "saturation": 0.951,
+        "brightness": 0.411,
+        "textured": true
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.896648,
+        "suggestFlip": false,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "eighties-icon",
+    "asset": "EightiesIcon",
+    "display": "Wedge Racer",
+    "tagline": "Wing the size of a table.",
+    "class": "supercar",
+    "length": 0.45,
+    "texture": null,
+    "textureExt": null,
+    "paint": {
+      "materialIndex": 1,
+      "areaShare": 0.513,
+      "rgb": [
+        0.91,
+        0.05,
+        0.03
+      ],
+      "hue": 1.4,
+      "saturation": 0.967,
+      "brightness": 0.91,
+      "textured": false
+    },
+    "report": {
+      "source": "DREAM FERRARI F40 by Alexander Schick - 6-j7kD0viYB.glb",
+      "asset": "EightiesIcon",
+      "nodes": 58,
+      "triangles": 3160,
+      "materials": 5,
+      "textures": [],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -0.284,
+          -0.07477,
+          -0.15515
+        ],
+        "max": [
+          0.336,
+          0.13273,
+          0.15853
+        ],
+        "size": [
+          0.62,
+          0.2075,
+          0.31368
+        ],
+        "orientedSize": [
+          0.31418,
+          0.20583,
+          0.62155
+        ]
+      },
+      "sizeKB": 202,
+      "paint": {
+        "materialIndex": 1,
+        "areaShare": 0.513,
+        "rgb": [
+          0.91,
+          0.05,
+          0.03
+        ],
+        "hue": 1.4,
+        "saturation": 0.967,
+        "brightness": 0.91,
+        "textured": false
+      },
+      "orientation": [
+        "yawed -90deg"
+      ],
+      "facing": {
+        "frontRed": 0.323654,
+        "rearRed": 0.618942,
+        "suggestFlip": false,
+        "confidence": 0.313
+      }
+    }
+  },
+  {
+    "id": "field-truck",
+    "asset": "FieldTruck",
+    "display": "Field Truck",
+    "tagline": "Goes anywhere, slowly.",
+    "class": "offroad",
+    "length": 0.5,
+    "texture": "FieldTruckPaint",
+    "textureExt": "png",
+    "paint": {},
+    "report": {
+      "source": "Humvee by madtrollstudio - Ebryot9iKM.glb",
+      "asset": "FieldTruck",
+      "nodes": 2,
+      "triangles": 8148,
+      "materials": 1,
+      "textures": [
+        "humveetexture_png.png"
+      ],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -2.46011,
+          -0.0056,
+          -1.19141
+        ],
+        "max": [
+          2.22255,
+          1.99175,
+          1.51031
+        ],
+        "size": [
+          4.68265,
+          1.99735,
+          2.70172
+        ],
+        "orientedSize": [
+          2.70115,
+          1.99735,
+          4.71942
+        ]
+      },
+      "sizeKB": 506,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.001,
+        "rgb": [
+          0.5686,
+          0.3608,
+          0.2196
+        ],
+        "hue": 24.3,
+        "saturation": 0.614,
+        "brightness": 0.569,
+        "textured": true
+      },
+      "orientation": [
+        "yawed 87deg"
+      ],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.0,
+        "suggestFlip": false,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "id": "trail-jeep",
+    "asset": "TrailJeep",
+    "display": "Trail Runner",
+    "tagline": "Tall and tippy. Great fun.",
+    "class": "offroad",
+    "length": 0.42,
+    "texture": null,
+    "textureExt": null,
+    "paint": {},
+    "report": {
+      "source": "Jeep by Zsky - AcSdGGrgYP.glb",
+      "asset": "TrailJeep",
+      "nodes": 2,
+      "triangles": 1942,
+      "materials": 8,
+      "textures": [],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -0.97015,
+          -0.9922,
+          -2.21437
+        ],
+        "max": [
+          1.06932,
+          1.33774,
+          2.34202
+        ],
+        "size": [
+          2.03947,
+          2.32994,
+          4.5564
+        ],
+        "orientedSize": [
+          2.03947,
+          2.32994,
+          4.5564
+        ]
+      },
+      "sizeKB": 120,
+      "paint": {
+        "materialIndex": 7,
+        "areaShare": 0.05,
+        "rgb": [
+          0.078,
+          0.1626,
+          0.02
+        ],
+        "hue": 95.6,
+        "saturation": 0.877,
+        "brightness": 0.163,
+        "textured": false
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.882576,
+        "suggestFlip": false,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "rotary-coupe",
+    "asset": "RotaryCoupe",
+    "display": "Drift Coupe",
+    "tagline": "The drifter's drifter.",
+    "class": "drift",
+    "length": 0.44,
+    "texture": "RotaryCoupePaint",
+    "textureExt": "png",
+    "paint": {},
+    "report": {
+      "source": "Mazda RX-7 by IvOfficial - SnIoWlh7S2.glb",
+      "asset": "RotaryCoupe",
+      "nodes": 12,
+      "triangles": 19720,
+      "materials": 6,
+      "textures": [
+        "Palette_png.png"
+      ],
+      "wheels": [
+        {
+          "name": "FL_WHEEL",
+          "recentred": true,
+          "centre": [
+            0.86247,
+            0.30634,
+            1.21568
+          ],
+          "radius": 0.01489,
+          "width": 0.02978
+        },
+        {
+          "name": "FR_WHEEL",
+          "recentred": true,
+          "centre": [
+            -0.86299,
+            0.30634,
+            1.21568
+          ],
+          "radius": 0.01489,
+          "width": 0.02978
+        },
+        {
+          "name": "RL_WHEEL",
+          "recentred": true,
+          "centre": [
+            0.86247,
+            0.30634,
+            -1.2332
+          ],
+          "radius": 0.01489,
+          "width": 0.02978
+        },
+        {
+          "name": "RR_WHEEL",
+          "recentred": true,
+          "centre": [
+            -0.86299,
+            0.30634,
+            -1.2332
+          ],
+          "radius": 0.01489,
+          "width": 0.02978
+        }
+      ],
+      "bounds": {
+        "min": [
+          -0.89911,
+          -0.00972,
+          -2.16517
+        ],
+        "max": [
+          0.89421,
+          1.2639,
+          2.15467
+        ],
+        "size": [
+          1.79332,
+          1.27363,
+          4.31983
+        ],
+        "orientedSize": [
+          1.78896,
+          1.27363,
+          4.31983
+        ]
+      },
+      "sizeKB": 965,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.022,
+        "rgb": [
+          0.5451,
+          0.4039,
+          0.2863
+        ],
+        "hue": 27.3,
+        "saturation": 0.475,
+        "brightness": 0.545,
+        "textured": true
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 0.464814,
+        "rearRed": 0.44125,
+        "suggestFlip": false,
+        "confidence": 0.026
+      }
+    }
+  },
+  {
+    "id": "vintage-saloon",
+    "asset": "VintageSaloon",
+    "display": "Vintage Saloon",
+    "tagline": "Skinny tyres, big ideas.",
+    "class": "classic",
+    "length": 0.44,
+    "texture": null,
+    "textureExt": null,
+    "paint": {},
+    "report": {
+      "source": "Old Car by Attila Dob\u00e1k - 3knnxGlixiJ.glb",
+      "asset": "VintageSaloon",
+      "nodes": 1,
+      "triangles": 25299,
+      "materials": 12,
+      "textures": [],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -2.36824,
+          -1.01833,
+          -1.55494
+        ],
+        "max": [
+          2.23171,
+          1.35357,
+          1.54769
+        ],
+        "size": [
+          4.59995,
+          2.37189,
+          3.10263
+        ],
+        "orientedSize": [
+          3.07334,
+          2.32609,
+          4.59113
+        ]
+      },
+      "sizeKB": 1503,
+      "paint": {
+        "materialIndex": 9,
+        "areaShare": 0.152,
+        "rgb": [
+          0.19,
+          0.09,
+          0.06
+        ],
+        "hue": 13.8,
+        "saturation": 0.684,
+        "brightness": 0.19,
+        "textured": false
+      },
+      "orientation": [
+        "yawed -89deg",
+        "flipped"
+      ],
+      "facing": {
+        "frontRed": 17.550968,
+        "rearRed": 4.206345,
+        "suggestFlip": true,
+        "confidence": 0.613
+      }
+    }
+  },
+  {
+    "id": "patrol-car",
+    "asset": "PatrolCar",
+    "display": "Police Car",
+    "tagline": "Planted and quick.",
+    "class": "sedan",
+    "length": 0.45,
+    "texture": null,
+    "textureExt": null,
+    "paint": {},
+    "report": {
+      "source": "Police Car by Quaternius - BwwnUrWGmV.glb",
+      "asset": "PatrolCar",
+      "nodes": 4,
+      "triangles": 3232,
+      "materials": 8,
+      "textures": [],
+      "wheels": [
+        {
+          "name": "Cop_BackWheels_Cylinder.001",
+          "recentred": true,
+          "centre": [
+            0.00021,
+            0.25902,
+            -1.15459
+          ],
+          "radius": 0.27529,
+          "width": 1.55272
+        },
+        {
+          "name": "Cop_FrontLeftWheel_Cylinder.011",
+          "recentred": true,
+          "centre": [
+            0.71205,
+            0.25902,
+            1.14105
+          ],
+          "radius": 0.27529,
+          "width": 0.17542
+        },
+        {
+          "name": "Cop_FrontRightWheel_Cylinder.012",
+          "recentred": true,
+          "centre": [
+            -0.71162,
+            0.25902,
+            1.14105
+          ],
+          "radius": 0.27529,
+          "width": 0.17542
+        }
+      ],
+      "bounds": {
+        "min": [
+          -0.88881,
+          -0.01626,
+          -1.86704
+        ],
+        "max": [
+          0.88881,
+          1.22249,
+          1.86345
+        ],
+        "size": [
+          1.77763,
+          1.23875,
+          3.73049
+        ],
+        "orientedSize": [
+          1.75634,
+          1.23875,
+          3.71576
+        ]
+      },
+      "sizeKB": 153,
+      "paint": {
+        "materialIndex": 5,
+        "areaShare": 0.009,
+        "rgb": [
+          0.6393,
+          0.0744,
+          0.0594
+        ],
+        "hue": 1.6,
+        "saturation": 0.907,
+        "brightness": 0.639,
+        "textured": false
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.164924,
+        "suggestFlip": false,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "estate-4x-4",
+    "asset": "Estate4x4",
+    "display": "Estate 4x4",
+    "tagline": "Heavy, composed, unhurried.",
+    "class": "offroad",
+    "length": 0.48,
+    "texture": "Estate4x4Paint",
+    "textureExt": "png",
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.185,
+      "rgb": [
+        0.7621,
+        0.6009,
+        0.4569
+      ],
+      "hue": 28.3,
+      "saturation": 0.401,
+      "brightness": 0.762,
+      "textured": true
+    },
+    "report": {
+      "source": "Range Rover by IvOfficial - 8zk4o6nALW.glb",
+      "asset": "Estate4x4",
+      "nodes": 33,
+      "triangles": 31418,
+      "materials": 2,
+      "textures": [
+        "Palette_png.png"
+      ],
+      "wheels": [
+        {
+          "name": "Tire3",
+          "recentred": false,
+          "centre": [
+            -2.1244,
+            -0.35144,
+            -0.21863
+          ],
+          "radius": 0.01041,
+          "width": 0.02082
+        },
+        {
+          "name": "Tire1",
+          "recentred": false,
+          "centre": [
+            2.10933,
+            -0.35144,
+            -0.21863
+          ],
+          "radius": 0.01041,
+          "width": 0.02082
+        },
+        {
+          "name": "Tire4",
+          "recentred": false,
+          "centre": [
+            -2.1244,
+            0.60819,
+            -0.21863
+          ],
+          "radius": 0.01041,
+          "width": 0.02082
+        },
+        {
+          "name": "Tire2",
+          "recentred": false,
+          "centre": [
+            2.10933,
+            0.60819,
+            -0.21863
+          ],
+          "radius": 0.01041,
+          "width": 0.02082
+        }
+      ],
+      "bounds": {
+        "min": [
+          -1.26481,
+          -1.32885,
+          -4.24483
+        ],
+        "max": [
+          1.25665,
+          1.58792,
+          2.25702
+        ],
+        "size": [
+          2.52146,
+          2.91677,
+          6.50186
+        ],
+        "orientedSize": [
+          2.67122,
+          2.91677,
+          6.53537
+        ]
+      },
+      "sizeKB": 1758,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.185,
+        "rgb": [
+          0.7621,
+          0.6009,
+          0.4569
+        ],
+        "hue": 28.3,
+        "saturation": 0.401,
+        "brightness": 0.762,
+        "textured": true
+      },
+      "orientation": [
+        "yawed -2deg"
+      ],
+      "facing": {
+        "frontRed": 0.014119,
+        "rearRed": 0.173478,
+        "suggestFlip": false,
+        "confidence": 0.849
+      }
+    }
+  },
+  {
+    "id": "limousine",
+    "asset": "Limousine",
+    "display": "Luxury Limo",
+    "tagline": "Long. Very long.",
+    "class": "classic",
+    "length": 0.52,
+    "texture": null,
+    "textureExt": null,
+    "paint": {},
+    "report": {
+      "source": "Rolls Royce by David Sirera - 3DtJTlxgO_U.glb",
+      "asset": "Limousine",
+      "nodes": 5,
+      "triangles": 8540,
+      "materials": 17,
+      "textures": [],
+      "wheels": [
+        {
+          "name": "wheel1_Circle.001",
+          "recentred": true,
+          "centre": [
+            28.6585,
+            -11.76663,
+            50.10427
+          ],
+          "radius": 12.87712,
+          "width": 9.82019
+        },
+        {
+          "name": "wheel1.001_Circle.002",
+          "recentred": true,
+          "centre": [
+            28.6585,
+            -11.76663,
+            -64.40913
+          ],
+          "radius": 12.87712,
+          "width": 9.82019
+        },
+        {
+          "name": "wheel1.002_Circle.003",
+          "recentred": true,
+          "centre": [
+            -28.62157,
+            -11.76663,
+            50.12028
+          ],
+          "radius": 12.87712,
+          "width": 9.82019
+        },
+        {
+          "name": "wheel1.003_Circle.004",
+          "recentred": true,
+          "centre": [
+            -28.62157,
+            -11.76663,
+            -64.39312
+          ],
+          "radius": 12.87712,
+          "width": 9.82019
+        }
+      ],
+      "bounds": {
+        "min": [
+          -33.78899,
+          -24.64374,
+          -110.5795
+        ],
+        "max": [
+          33.7072,
+          30.55468,
+          80.76224
+        ],
+        "size": [
+          67.49619,
+          55.19842,
+          191.34174
+        ],
+        "orientedSize": [
+          67.49619,
+          55.14519,
+          190.06319
+        ]
+      },
+      "sizeKB": 369,
+      "paint": {
+        "materialIndex": 6,
+        "areaShare": 0.005,
+        "rgb": [
+          0.4023,
+          0.0,
+          0.0
+        ],
+        "hue": 0.0,
+        "saturation": 1.0,
+        "brightness": 0.402,
+        "textured": false
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 208.524641,
+        "suggestFlip": false,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "track-coupe",
+    "asset": "TrackCoupe",
+    "display": "Track Coupe",
+    "tagline": "Sharp and predictable.",
+    "class": "sports",
+    "length": 0.44,
+    "texture": null,
+    "textureExt": null,
+    "paint": {},
+    "report": {
+      "source": "Sports Car by Quaternius - 1mkmFkAz5v.glb",
+      "asset": "TrackCoupe",
+      "nodes": 4,
+      "triangles": 3148,
+      "materials": 6,
+      "textures": [],
+      "wheels": [
+        {
+          "name": "SportsCar2_BackWheels_Cylinder.002",
+          "recentred": true,
+          "centre": [
+            0.00095,
+            0.26466,
+            -1.32076
+          ],
+          "radius": 0.28039,
+          "width": 1.58153
+        },
+        {
+          "name": "SportsCar2_FrontLeftWheel_Cylinder.017",
+          "recentred": true,
+          "centre": [
+            0.72599,
+            0.26466,
+            1.18592
+          ],
+          "radius": 0.28039,
+          "width": 0.17867
+        },
+        {
+          "name": "SportsCar2_FrontRightWheel_Cylinder.018",
+          "recentred": true,
+          "centre": [
+            -0.72409,
+            0.26466,
+            1.18592
+          ],
+          "radius": 0.28039,
+          "width": 0.17867
+        }
+      ],
+      "bounds": {
+        "min": [
+          -0.9358,
+          -0.01574,
+          -2.02856
+        ],
+        "max": [
+          0.9358,
+          1.18732,
+          1.89797
+        ],
+        "size": [
+          1.87159,
+          1.20306,
+          3.92653
+        ],
+        "orientedSize": [
+          1.82832,
+          1.20306,
+          3.88307
+        ]
+      },
+      "sizeKB": 150,
+      "paint": {
+        "materialIndex": 3,
+        "areaShare": 0.005,
+        "rgb": [
+          0.64,
+          0.2996,
+          0.102
+        ],
+        "hue": 22.0,
+        "saturation": 0.841,
+        "brightness": 0.64,
+        "textured": false
+      },
+      "orientation": [],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.088066,
+        "suggestFlip": false,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "city-taxi",
+    "asset": "CityTaxi",
+    "display": "City Taxi",
+    "tagline": "Soft springs, sliding tail.",
+    "class": "sedan",
+    "length": 0.45,
+    "texture": "CityTaxiPaint",
+    "textureExt": "png",
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.714,
+      "rgb": [
+        1.0,
+        0.7294,
+        0.0
+      ],
+      "hue": 43.8,
+      "saturation": 1.0,
+      "brightness": 1.0,
+      "textured": true
+    },
+    "report": {
+      "source": "Taxi by Poly by Google - fet47VieV0L.glb",
+      "asset": "CityTaxi",
+      "nodes": 1,
+      "triangles": 1836,
+      "materials": 1,
+      "textures": [
+        "_1399_Taxi.png"
+      ],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -26.12338,
+          -1.79544,
+          -63.72014
+        ],
+        "max": [
+          26.12338,
+          37.6061,
+          47.25377
+        ],
+        "size": [
+          52.24677,
+          39.40154,
+          110.97391
+        ],
+        "orientedSize": [
+          47.81262,
+          39.40154,
+          109.66434
+        ]
+      },
+      "sizeKB": 29,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.714,
+        "rgb": [
+          1.0,
+          0.7294,
+          0.0
+        ],
+        "hue": 43.8,
+        "saturation": 1.0,
+        "brightness": 1.0,
+        "textured": true
+      },
+      "orientation": [
+        "yawed -2deg"
+      ],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.0,
+        "suggestFlip": false,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "id": "work-pickup",
+    "asset": "WorkPickup",
+    "display": "Work Pickup",
+    "tagline": "Empty bed, loose back end.",
+    "class": "truck",
+    "length": 0.48,
+    "texture": null,
+    "textureExt": null,
+    "paint": {
+      "materialIndex": 1,
+      "areaShare": 0.272,
+      "rgb": [
+        0.2078,
+        0.3647,
+        0.6275
+      ],
+      "hue": 217.6,
+      "saturation": 0.669,
+      "brightness": 0.627,
+      "textured": false
+    },
+    "report": {
+      "source": "Toyota Hilux 97 by Muhammad Reyhan - 8-0nFArehjd.glb",
+      "asset": "WorkPickup",
+      "nodes": 5,
+      "triangles": 1908,
+      "materials": 10,
+      "textures": [],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -72.5681,
+          13.6792,
+          -340.51599
+        ],
+        "max": [
+          61.6156,
+          133.422,
+          -14.8306
+        ],
+        "size": [
+          134.1837,
+          119.7428,
+          325.68539
+        ],
+        "orientedSize": [
+          134.1837,
+          119.7428,
+          325.68539
+        ]
+      },
+      "sizeKB": 107,
+      "paint": {
+        "materialIndex": 1,
+        "areaShare": 0.272,
+        "rgb": [
+          0.2078,
+          0.3647,
+          0.6275
+        ],
+        "hue": 217.6,
+        "saturation": 0.669,
+        "brightness": 0.627,
+        "textured": false
+      },
+      "orientation": [
+        "flipped"
+      ],
+      "facing": {
+        "frontRed": 232.608289,
+        "rearRed": 0.0,
+        "suggestFlip": true,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "angular-truck",
+    "asset": "AngularTruck",
+    "display": "Angular Truck",
+    "tagline": "Made entirely of straight lines.",
+    "class": "truck",
+    "length": 0.52,
+    "texture": null,
+    "textureExt": null,
+    "paint": {},
+    "report": {
+      "source": "Truck by sugamo - fbDxapxkwY9.glb",
+      "asset": "AngularTruck",
+      "nodes": 21,
+      "triangles": 3084,
+      "materials": 6,
+      "textures": [],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -0.26072,
+          -0.07574,
+          -0.14184
+        ],
+        "max": [
+          0.24624,
+          0.12497,
+          0.15181
+        ],
+        "size": [
+          0.50695,
+          0.20071,
+          0.29365
+        ],
+        "orientedSize": [
+          0.18159,
+          0.20015,
+          0.49077
+        ]
+      },
+      "sizeKB": 222,
+      "paint": {
+        "materialIndex": 5,
+        "areaShare": 0.003,
+        "rgb": [
+          1.0,
+          0.33,
+          0.0
+        ],
+        "hue": 19.8,
+        "saturation": 1.0,
+        "brightness": 1.0,
+        "textured": false
+      },
+      "orientation": [
+        "yawed 72deg"
+      ],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.001327,
+        "suggestFlip": false,
+        "confidence": 1.0
+      }
+    }
+  },
+  {
+    "id": "family-van",
+    "asset": "FamilyVan",
+    "display": "Family Van",
+    "tagline": "Leans like a boat. Endearing.",
+    "class": "van",
+    "length": 0.46,
+    "texture": "FamilyVanPaint",
+    "textureExt": "png",
+    "paint": {
+      "materialIndex": 0,
+      "areaShare": 0.412,
+      "rgb": [
+        0.0,
+        0.4627,
+        0.702
+      ],
+      "hue": 200.4,
+      "saturation": 1.0,
+      "brightness": 0.702,
+      "textured": true
+    },
+    "report": {
+      "source": "Van by Poly by Google - aT_24cDaW1a.glb",
+      "asset": "FamilyVan",
+      "nodes": 1,
+      "triangles": 1946,
+      "materials": 1,
+      "textures": [
+        "_1387_Van.png"
+      ],
+      "wheels": [],
+      "bounds": {
+        "min": [
+          -21.94452,
+          0.00013,
+          -40.55856
+        ],
+        "max": [
+          21.94452,
+          34.32986,
+          39.67208
+        ],
+        "size": [
+          43.88905,
+          34.32973,
+          80.23064
+        ],
+        "orientedSize": [
+          43.05077,
+          34.32973,
+          79.80851
+        ]
+      },
+      "sizeKB": 37,
+      "paint": {
+        "materialIndex": 0,
+        "areaShare": 0.412,
+        "rgb": [
+          0.0,
+          0.4627,
+          0.702
+        ],
+        "hue": 200.4,
+        "saturation": 1.0,
+        "brightness": 0.702,
+        "textured": true
+      },
+      "orientation": [
+        "yawed -2deg"
+      ],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.0,
+        "suggestFlip": false,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "id": "banana-kart",
+    "asset": "BananaKart",
+    "display": "Banana Kart",
+    "tagline": "Exactly as silly as it looks.",
+    "class": "novelty",
+    "length": 0.4,
+    "texture": "BananaKartPaint",
+    "textureExt": "png",
+    "paint": {},
+    "report": {
+      "source": "cartoon banana car by Felipe Lujan-Bear - 1RjuCX8gI9w.glb",
+      "asset": "BananaKart",
+      "nodes": 19,
+      "triangles": 2916,
+      "materials": 8,
+      "textures": [
+        "tire_color_mat.png"
+      ],
+      "wheels": [
+        {
+          "name": "tire",
+          "recentred": true,
+          "centre": [
+            -0.58635,
+            -83.8337,
+            -196.4553
+          ],
+          "radius": 119.8303,
+          "width": 69.6439
+        },
+        {
+          "name": "tire_2",
+          "recentred": true,
+          "centre": [
+            -134.09055,
+            -122.0577,
+            209.964
+          ],
+          "radius": 82.7693,
+          "width": 69.66689
+        },
+        {
+          "name": "tire_3",
+          "recentred": true,
+          "centre": [
+            129.82875,
+            -122.0577,
+            209.964
+          ],
+          "radius": 82.7693,
+          "width": 69.6665
+        }
+      ],
+      "bounds": {
+        "min": [
+          -168.924,
+          -204.827,
+          -405.26501
+        ],
+        "max": [
+          164.662,
+          234.60699,
+          402.509
+        ],
+        "size": [
+          333.586,
+          439.43399,
+          807.77402
+        ],
+        "orientedSize": [
+          333.586,
+          435.55299,
+          799.513
+        ]
+      },
+      "sizeKB": 216,
+      "paint": null,
+      "orientation": [],
+      "facing": {
+        "frontRed": 0.0,
+        "rearRed": 0.0,
+        "suggestFlip": false,
+        "confidence": 0.0
+      }
+    }
+  }
+]

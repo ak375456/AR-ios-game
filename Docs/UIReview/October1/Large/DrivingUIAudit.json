@@ -1,0 +1,29 @@
+{
+  "--drive-ui-preview" : {
+    "clearFraction" : 0.89954545454545454,
+    "controlCount" : 4,
+    "font" : "LilitaOne",
+    "height" : 860,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 440
+  },
+  "--drive-ui-preview --manual" : {
+    "clearFraction" : 0.8793128964059197,
+    "controlCount" : 5,
+    "font" : "LilitaOne",
+    "height" : 860,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 440
+  },
+  "--drive-ui-preview --menu" : {
+    "clearFraction" : 0.89954545454545454,
+    "controlCount" : 4,
+    "font" : "LilitaOne",
+    "height" : 860,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 440
+  }
+}

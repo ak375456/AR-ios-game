@@ -1,0 +1,101 @@
+{
+  "--drive-ui-preview" : {
+    "clearFraction" : 0.86076190476190473,
+    "controlCount" : 4,
+    "font" : "LilitaOne",
+    "height" : 728,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 375
+  },
+  "--drive-ui-preview --active-course" : {
+    "clearFraction" : 0.86076190476190473,
+    "controlCount" : 4,
+    "font" : "LilitaOne",
+    "height" : 728,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 375
+  },
+  "--drive-ui-preview --analog" : {
+    "clearFraction" : 0.83401326007326004,
+    "controlCount" : 4,
+    "font" : "LilitaOne",
+    "height" : 728,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 375
+  },
+  "--drive-ui-preview --editor" : {
+    "clearFraction" : 1,
+    "controlCount" : 0,
+    "font" : "LilitaOne",
+    "height" : 728,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 375
+  },
+  "--drive-ui-preview --focus" : {
+    "clearFraction" : 0.90032234432234437,
+    "controlCount" : 4,
+    "font" : "LilitaOne",
+    "height" : 728,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 375
+  },
+  "--drive-ui-preview --legacy" : {
+    "clearFraction" : 0.83401326007326004,
+    "controlCount" : 4,
+    "font" : "LilitaOne",
+    "height" : 728,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 375
+  },
+  "--drive-ui-preview --manual" : {
+    "clearFraction" : 0.83271794871794869,
+    "controlCount" : 5,
+    "font" : "LilitaOne",
+    "height" : 728,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 375
+  },
+  "--drive-ui-preview --manual --moved" : {
+    "clearFraction" : 0.82177435897435891,
+    "controlCount" : 5,
+    "font" : "LilitaOne",
+    "height" : 728,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 375
+  },
+  "--drive-ui-preview --menu" : {
+    "clearFraction" : 0.86076190476190473,
+    "controlCount" : 4,
+    "font" : "LilitaOne",
+    "height" : 728,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 375
+  },
+  "--drive-ui-preview --recovery" : {
+    "clearFraction" : 0.78281318681318679,
+    "controlCount" : 4,
+    "font" : "LilitaOne",
+    "height" : 728,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 375
+  },
+  "--drive-ui-preview --scanning" : {
+    "clearFraction" : 0.91495970695970696,
+    "controlCount" : 0,
+    "font" : "LilitaOne",
+    "height" : 728,
+    "missionPanel" : false,
+    "overlap" : false,
+    "width" : 375
+  }
+}

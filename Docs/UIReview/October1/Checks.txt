@@ -1,0 +1,11 @@
+October 1 verification — native source and model checks
+
+Debug simulator: BUILD SUCCEEDED
+Unsigned Release iOS: BUILD SUCCEEDED
+
+764/764 progression checks passed
+measured wheelbase=0.22127202 width=0.1932949
+Measured actual orbit: standard=2, perfect=2, steer=1.0, handbrake duty=1.0
+mini-hatch stock best: seconds=6.000047 steer=1.0 handbrake=1.0 angle=12.137962 speed=0.5049346 radius=0.55159646 length=0.36
+Measured actual orbit: standard=3, perfect=3, steer=0.90000004, handbrake duty=1.0
+mini-hatch max best: seconds=6.000047 steer=0.90000004 handbrake=1.0 angle=12.107739 speed=0.7854685 radius=0.7964251 length=0.36
