@@ -68,6 +68,10 @@ import Foundation
         var visitedMastery: Set<String> = []
         var maxPurchaseGap: Double = 0
         var nextDailySet = 0
+        /// Keep playing after the collection until every mission is done and every
+        /// part on every car is at level 5. Cars come first; parts take the rest.
+        var everything = false
+        var carsDoneAt: Double = 0, missionsDoneAt: Double = 0
         mutating func grant(_ id: String, _ amount: Int, _ category: String) {
             if save.transactions.contains(id) { return }
             try! Economy.grant(id:id,title:id,coins:amount,now:Date(timeIntervalSince1970:seconds),save:&save)
@@ -109,6 +113,35 @@ import Foundation
                 maxPurchaseGap = max(maxPurchaseGap,seconds-(purchasedAt.last ?? 0)); purchasedAt.append(seconds)
                 if slot == 1 { secondCar = seconds }
             }
+            if everything { buyCheapestParts() }
+        }
+        /// Spends on the cheapest remaining parts, unless the next car is only
+        /// waiting on coins: then every coin is saved for it.
+        mutating func buyCheapestParts() {
+            if let slot = ProgressionCatalog.ids.firstIndex(where:{!save.owned.contains($0)}),
+               save.owned.contains(ProgressionCatalog.ids[slot-1]), save.stars >= ProgressionCatalog.stars[slot] { return }
+            while true {
+                var best: (id: String, part: UpgradePart, level: Int, cost: Int)?
+                for id in ProgressionCatalog.ids where save.owned.contains(id) {
+                    for part in UpgradePart.allCases {
+                        let level = (save.parts[id] ?? CarParts())[part]
+                        guard level < 5 else { continue }
+                        let cost = ProgressionCatalog.upgradeCost(carID:id,part:part,level:level)
+                        if best == nil || cost < best!.cost { best = (id,part,level,cost) }
+                    }
+                }
+                guard let b = best, save.wallet >= b.cost else { return }
+                try! Economy.upgrade(b.id,part:b.part,expectedLevel:b.level,save:&save)
+                spending["parts",default:0] += b.cost
+            }
+        }
+        var allMaxed: Bool {
+            save.owned.count == 28 && ProgressionCatalog.ids.allSatisfy { id in
+                UpgradePart.allCases.allSatisfy { (save.parts[id] ?? CarParts())[$0] == 5 }
+            }
+        }
+        var missionsDone: Bool {
+            (MissionCatalog.career + MissionCatalog.mastery).allSatisfy { save.missions[$0.id]?.completed == true }
         }
         mutating func advance(_ duration: Double, carID fixedCar: String? = nil) {
             var remaining = duration
@@ -189,6 +222,23 @@ import Foundation
                 } else { advance(30) }
                 precondition(seconds < 200*3600,"Unreachable collection")
             }
+            carsDoneAt = seconds
+            guard everything else { return }
+            while !(missionsDone && allMaxed) {
+                dailyIfDue()
+                for m in MissionCatalog.career where save.missions[m.id]?.completed != true && feasible(m) { attempt(m) }
+                if let id = ProgressionCatalog.ids.first(where:{save.owned.contains($0) && !visitedMastery.contains($0)}) {
+                    visitedMastery.insert(id)
+                    for m in MissionCatalog.mastery where m.carID == id && save.missions[m.id]?.completed != true {
+                        attempt(m, carID: id)
+                    }
+                } else if let m = MissionCatalog.mastery.first(where:{save.missions[$0.id]?.completed != true}) {
+                    attempt(m, carID: m.carID)
+                } else { advance(30) }
+                if missionsDone && missionsDoneAt == 0 { missionsDoneAt = seconds }
+                shop()
+                precondition(seconds < 1000*3600,"Unreachable completion")
+            }
         }
     }
     static func main() {
@@ -203,6 +253,20 @@ import Foundation
             let dailyCoins = route.income["daily",default:0]+route.income["login",default:0]
             print(String(format:"| %@ | %@ | %@ | %.2f | %.2f | %.2f | %.1f | %d / %d | %d / %d / %d |",p.name,upgrades ? "Mixed" : "Save",daily ? "Yes" : "No",route.firstUpgrade/60,route.secondCar/60,route.seconds/3600,route.maxPurchaseGap/60,route.spending["parts",default:0],route.spending["paint",default:0],first,route.income["contract",default:0],dailyCoins))
         } } }
+        print("\n## Completing everything\n")
+        let partsTotal = ProgressionCatalog.ids.reduce(0) { total, id in
+            total + UpgradePart.allCases.reduce(0) { sum, part in
+                sum + (1...4).reduce(0) { $0 + ProgressionCatalog.upgradeCost(carID:id,part:part,level:$1) }
+            }
+        }
+        print("Cars-first route that keeps playing until every mission is done and every part on all 28 cars is at level 5: the next car is bought as soon as it is affordable, and otherwise coins go to the cheapest remaining part. All 27 cars cost \(ProgressionCatalog.prices.reduce(0,+)) coins and every part \(partsTotal), \(ProgressionCatalog.prices.reduce(0,+)+partsTotal) in total. Hours are active driving; at about 2 hours a day, 60 hours is a month.\n")
+        print("| Profile | Daily | Car 2 min | All 28 cars hours | Largest car gap min | All missions hours | Everything hours | First-clear / contracts / daily coins |\n|---|---|---:|---:|---:|---:|---:|---:|")
+        for p in profiles { for daily in [false,true] {
+            var route = Route(profile:p,upgrades:false,dailies:daily); route.everything = true; route.run()
+            let first = ["career","mastery","chapter"].reduce(0){$0+route.income[$1,default:0]}
+            let dailyCoins = route.income["daily",default:0]+route.income["login",default:0]
+            print(String(format:"| %@ | %@ | %.1f | %.1f | %.0f | %.1f | %.1f | %d / %d / %d |",p.name,daily ? "Yes" : "No",route.secondCar/60,route.carsDoneAt/3600,route.maxPurchaseGap/60,max(route.missionsDoneAt,route.carsDoneAt)/3600,route.seconds/3600,first,route.income["contract",default:0],dailyCoins))
+        } }
         print("\nAll sequential cars cost \(ProgressionCatalog.prices.reduce(0,+)) coins. The solver uses exact source prices and grants each first clear once. Spending never affects availability of the distance/time contract. The model is intentionally transparent about cumulative-task overlap; adding arbitrary setup delays would hide early-pacing mismatches.\n")
         print("Nominal attempts: brake stop 6s/cycle; reverse distance uses 30% of forward modeled speed; clean driving uses moving time divided by success rate. Road coins: one pickup per 6 moving seconds averaging 2.35, a 10 every 15 coins. Turns 8s per circle, 6s per U-turn or handbrake turn; top speed and gear runs 15-20s; photos 15s; a new car's drive 60s once owned. Pure distance/time tasks have no retry multiplier. No course setup or race finish is required.\n")
     }

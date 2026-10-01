@@ -20,13 +20,18 @@ tracking, the revised model puts it at 6.8–8.8 minutes and the largest average
 gap at roughly 55–63 minutes. Prices are unchanged by the UI revision. Star gates still attach to slots; every purchase also
 requires the immediately preceding stable ID. No part or paint is compulsory.
 
-**Mission-funded economy.** `ProgressionCatalog.economyScale` (0.1088) multiplies
-the car, part and transmission price knobs. All 27 cars cost 23,515 coins, and every
-part at level 5 on all 28 cars costs 23,520 (390 for the starter, 1,290 for the
-last car), for a total of 47,035. Completing every mission once pays 37,035
-(120 career missions 11,575, 10 chapter bonuses 5,500, 168 mastery missions 19,960),
-leaving exactly 10,000 coins to earn from contracts, dailies and road coins.
-Prices in the table below are the shipping prices after this scale.
+**A month to complete.** Two dials in `ProgressionCatalog` set every price:
+`carEconomyScale` (0.9) and `partEconomyScale` (0.32, transmission included).
+All 27 cars cost 194,515 coins, and every part at level 5 on all 28 cars costs
+69,250 (1,195 for the starter, 3,755 for the last car), for a total of 263,765.
+Completing every mission once pays 37,035, about 14% of that. Contracts pay the
+rest, plus dailies and road coins. In the economy simulation an average player
+owns every car after about 40-44 hours of driving and has every part maxed after
+about 56-62 hours: a month at roughly 2 hours a day. Newcomers take longer and
+skilled players less (see EconomyReport.md, "Completing everything"). Cars carry
+about three quarters of the cost, so new cars keep arriving through most of the
+month instead of all landing in the first week, while car 2 still arrives about
+2 minutes in. Prices in the table below are the shipping prices.
 
 The speed and acceleration columns below are **headless solver measurements**
 with SceneKit-measured asset geometry, automatic transmission, full straight
@@ -37,33 +42,33 @@ Only displayed speed converts by 10 × unit conversion (1 m/s → 36 km/h).
 | Slot | Car and stable ID | Coins | Stars | Stock / max m/s | Stock / max time to 0.8 m/s |
 |---|---|---:|---:|---:|---:|
 | 1 | Mini Hatch (`mini-hatch`) | 0 | 0 | 1.00 / 1.55 | 1.09 / 0.37 |
-| 2 | Runabout (`runabout`) | 270 | 2 | 1.02 / 1.55 | 1.07 / 0.37 |
-| 3 | Rust Bucket (`rust-bucket`) | 325 | 4 | 1.04 / 1.35 | 0.92 / 0.50 |
-| 4 | Vintage Saloon (`vintage-saloon`) | 380 | 6 | 1.06 / 1.35 | 0.89 / 0.50 |
-| 5 | Luxury Limo (`limousine`) | 435 | 9 | 1.08 / 1.35 | 0.87 / 0.50 |
-| 6 | Family Van (`family-van`) | 505 | 12 | 1.10 / 1.45 | 0.88 / 0.43 |
-| 7 | Ambulance (`ambulance`) | 570 | 15 | 1.12 / 1.45 | 0.87 / 0.43 |
-| 8 | Angular Truck (`angular-truck`) | 655 | 18 | 1.14 / 1.50 | 0.86 / 0.43 |
-| 9 | Work Pickup (`work-pickup`) | 735 | 22 | 1.16 / 1.50 | 0.84 / 0.43 |
-| 10 | Trail Runner (`trail-jeep`) | 790 | 26 | 1.18 / 1.50 | 0.78 / 0.40 |
-| 11 | Field Truck (`field-truck`) | 815 | 30 | 1.20 / 1.50 | 0.77 / 0.40 |
-| 12 | Estate 4x4 (`estate-4x-4`) | 845 | 34 | 1.22 / 1.50 | 0.76 / 0.40 |
-| 13 | Beach Buggy (`beach-buggy`) | 870 | 38 | 1.24 / 1.50 | 0.75 / 0.40 |
-| 14 | Banana Kart (`banana-kart`) | 900 | 43 | 1.26 / 1.60 | 0.50 / 0.43 |
-| 15 | City Taxi (`city-taxi`) | 925 | 48 | 1.28 / 1.65 | 0.46 / 0.31 |
-| 16 | Sports Sedan (`sedan-sports`) | 950 | 53 | 1.30 / 1.65 | 0.44 / 0.31 |
-| 17 | Police Car (`patrol-car`) | 980 | 58 | 1.32 / 1.65 | 0.43 / 0.31 |
-| 18 | Hot Hatch (`hot-hatch`) | 1,005 | 63 | 1.38 / 1.80 | 0.51 / 0.44 |
-| 19 | Drift Coupe (`rotary-coupe`) | 1,035 | 68 | 1.43 / 1.80 | 0.50 / 0.44 |
-| 20 | 80s Car (`eighties-wedge`) | 1,060 | 74 | 1.52 / 2.05 | 0.33 / 0.28 |
-| 21 | Roadster (`roadster`) | 1,090 | 80 | 1.57 / 2.05 | 0.32 / 0.28 |
-| 22 | Grand Tourer (`grand-tourer`) | 1,115 | 86 | 1.62 / 2.05 | 0.31 / 0.28 |
-| 23 | Pony Coupe (`pony-car`) | 1,140 | 92 | 1.67 / 2.05 | 0.31 / 0.28 |
-| 24 | Track Coupe (`track-coupe`) | 1,170 | 98 | 1.72 / 2.05 | 0.31 / 0.28 |
-| 25 | Muscle Coupe (`muscle-coupe`) | 1,195 | 104 | 1.78 / 2.05 | 0.30 / 0.28 |
-| 26 | Wedge Racer (`eighties-icon`) | 1,225 | 110 | 1.93 / 2.30 | 0.29 / 0.27 |
-| 27 | Apex GT (`supercar`) | 1,250 | 115 | 2.01 / 2.30 | 0.29 / 0.27 |
-| 28 | Open Wheeler (`racer`) | 1,280 | 120 | 2.16 / 2.45 | 0.28 / 0.27 |
+| 2 | Runabout (`runabout`) | 2,250 | 2 | 1.02 / 1.55 | 1.07 / 0.37 |
+| 3 | Rust Bucket (`rust-bucket`) | 2,700 | 4 | 1.04 / 1.35 | 0.92 / 0.50 |
+| 4 | Vintage Saloon (`vintage-saloon`) | 3,150 | 6 | 1.06 / 1.35 | 0.89 / 0.50 |
+| 5 | Luxury Limo (`limousine`) | 3,600 | 9 | 1.08 / 1.35 | 0.87 / 0.50 |
+| 6 | Family Van (`family-van`) | 4,165 | 12 | 1.10 / 1.45 | 0.88 / 0.43 |
+| 7 | Ambulance (`ambulance`) | 4,725 | 15 | 1.12 / 1.45 | 0.87 / 0.43 |
+| 8 | Angular Truck (`angular-truck`) | 5,400 | 18 | 1.14 / 1.50 | 0.86 / 0.43 |
+| 9 | Work Pickup (`work-pickup`) | 6,075 | 22 | 1.16 / 1.50 | 0.84 / 0.43 |
+| 10 | Trail Runner (`trail-jeep`) | 6,525 | 26 | 1.18 / 1.50 | 0.78 / 0.40 |
+| 11 | Field Truck (`field-truck`) | 6,750 | 30 | 1.20 / 1.50 | 0.77 / 0.40 |
+| 12 | Estate 4x4 (`estate-4x-4`) | 6,975 | 34 | 1.22 / 1.50 | 0.76 / 0.40 |
+| 13 | Beach Buggy (`beach-buggy`) | 7,200 | 38 | 1.24 / 1.50 | 0.75 / 0.40 |
+| 14 | Banana Kart (`banana-kart`) | 7,425 | 43 | 1.26 / 1.60 | 0.50 / 0.43 |
+| 15 | City Taxi (`city-taxi`) | 7,650 | 48 | 1.28 / 1.65 | 0.46 / 0.31 |
+| 16 | Sports Sedan (`sedan-sports`) | 7,875 | 53 | 1.30 / 1.65 | 0.44 / 0.31 |
+| 17 | Police Car (`patrol-car`) | 8,100 | 58 | 1.32 / 1.65 | 0.43 / 0.31 |
+| 18 | Hot Hatch (`hot-hatch`) | 8,325 | 63 | 1.38 / 1.80 | 0.51 / 0.44 |
+| 19 | Drift Coupe (`rotary-coupe`) | 8,550 | 68 | 1.43 / 1.80 | 0.50 / 0.44 |
+| 20 | 80s Car (`eighties-wedge`) | 8,775 | 74 | 1.52 / 2.05 | 0.33 / 0.28 |
+| 21 | Roadster (`roadster`) | 9,000 | 80 | 1.57 / 2.05 | 0.32 / 0.28 |
+| 22 | Grand Tourer (`grand-tourer`) | 9,225 | 86 | 1.62 / 2.05 | 0.31 / 0.28 |
+| 23 | Pony Coupe (`pony-car`) | 9,450 | 92 | 1.67 / 2.05 | 0.31 / 0.28 |
+| 24 | Track Coupe (`track-coupe`) | 9,675 | 98 | 1.72 / 2.05 | 0.31 / 0.28 |
+| 25 | Muscle Coupe (`muscle-coupe`) | 9,900 | 104 | 1.78 / 2.05 | 0.30 / 0.28 |
+| 26 | Wedge Racer (`eighties-icon`) | 10,125 | 110 | 1.93 / 2.30 | 0.29 / 0.27 |
+| 27 | Apex GT (`supercar`) | 10,350 | 115 | 2.01 / 2.30 | 0.29 / 0.27 |
+| 28 | Open Wheeler (`racer`) | 10,575 | 120 | 2.16 / 2.45 | 0.28 / 0.27 |
 
 ## Parts, paint and ratings
 

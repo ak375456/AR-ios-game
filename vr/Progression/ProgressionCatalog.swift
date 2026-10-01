@@ -7,15 +7,17 @@ enum ProgressionCatalog {
         "estate-4x-4", "beach-buggy", "banana-kart", "city-taxi", "sedan-sports", "patrol-car",
         "hot-hatch", "rotary-coupe", "eighties-wedge", "roadster", "grand-tourer", "pony-car",
         "track-coupe", "muscle-coupe", "eighties-icon", "supercar", "racer"]
-    /// Shared dial on every price. 0.1088 makes all 27 cars plus every part at
-    /// level 5 cost 47,035 coins, exactly 10,000 more than completing every
-    /// mission pays (career 11,575 + chapter bonuses 5,500 + mastery 19,960).
-    /// Contracts, dailies and road coins cover the rest.
-    static let economyScale = 0.1088
-    /// Relative knobs (1 = the original prices) before `economyScale`.
-    static let carPriceScale = 2.5 * economyScale
-    static let partPriceScale = 2.2 * economyScale
-    static let transmissionPriceScale = 4.06 * economyScale
+    /// Month-long economy dials for cars and for parts (transmission included).
+    /// Tuned with `Tools/EconomySimulation.swift` so an average player owns every
+    /// car after about 40-44 hours of driving and has every part on every car at
+    /// level 5 after about 60: a month at roughly 2 hours a day. Cars carry most
+    /// of the cost so new cars keep arriving through the month. See Docs/Balancing.md.
+    static let carEconomyScale = 0.9
+    static let partEconomyScale = 0.32
+    /// Relative knobs (1 = the original prices) before the economy dials.
+    static let carPriceScale = 2.5 * carEconomyScale
+    static let partPriceScale = 2.2 * partEconomyScale
+    static let transmissionPriceScale = 4.06 * partEconomyScale
     /// Base prices scaled by `carPriceScale`, rounded to 5 coins. The starter stays free.
     static let prices = [0,1000,1200,1400,1600,1850,2100,2400,2700,2900,3000,3100,3200,3300,3400,3500,3600,3700,3800,3900,4000,4100,4200,4300,4400,4500,4600,4700]
         .map { $0 == 0 ? 0 : roundCoins(Double($0) * carPriceScale) }
