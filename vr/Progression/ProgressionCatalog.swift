@@ -7,10 +7,14 @@ enum ProgressionCatalog {
         "estate-4x-4", "beach-buggy", "banana-kart", "city-taxi", "sedan-sports", "patrol-car",
         "hot-hatch", "rotary-coupe", "eighties-wedge", "roadster", "grand-tourer", "pony-car",
         "track-coupe", "muscle-coupe", "eighties-icon", "supercar", "racer"]
-    /// Tuning knobs for how hard the economy is. 1 = the original prices.
-    static let carPriceScale = 2.5
-    static let partPriceScale = 2.2
-    static let transmissionPriceScale = 4.06
+    /// Shared dial on every price. 0.0856 makes all 27 cars plus every part at
+    /// level 5 cost 37,010 coins, just under the 37,035 that completing every
+    /// mission pays (career 11,575 + chapter bonuses 5,500 + mastery 19,960).
+    static let economyScale = 0.0856
+    /// Relative knobs (1 = the original prices) before `economyScale`.
+    static let carPriceScale = 2.5 * economyScale
+    static let partPriceScale = 2.2 * economyScale
+    static let transmissionPriceScale = 4.06 * economyScale
     /// Base prices scaled by `carPriceScale`, rounded to 5 coins. The starter stays free.
     static let prices = [0,1000,1200,1400,1600,1850,2100,2400,2700,2900,3000,3100,3200,3300,3400,3500,3600,3700,3800,3900,4000,4100,4200,4300,4400,4500,4600,4700]
         .map { $0 == 0 ? 0 : roundCoins(Double($0) * carPriceScale) }
