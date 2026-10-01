@@ -8,6 +8,7 @@
 import Foundation
 import RealityKit
 import simd
+import UIKit
 
 /// Particle emitters at the rear contact patches.
 ///
@@ -33,10 +34,12 @@ final class TireSmoke {
         /// stationary scrub.
         static let movingSpeed: Float = 0.30
         /// Particles per second per wheel at full intensity.
-        static let maxBirthRate: Float = 42
-        /// Puff size as a fraction of wheel radius.
-        static let sizePerWheelRadius: Float = 0.68
-        static let lifeSpanRange: ClosedRange<Double> = 0.75...1.45
+        static let maxBirthRate: Float = 52
+        /// Puff size at birth as a fraction of wheel radius. Puffs start tight
+        /// at the tyre and billow out to several times this as they age.
+        static let sizePerWheelRadius: Float = 0.6
+        /// Real tyre smoke hangs in the air; a hard slide leaves a lingering cloud.
+        static let lifeSpanRange: ClosedRange<Double> = 1.1...2.5
         /// Below this the emitter is switched off entirely.
         static let cutoff: Float = 0.02
     }
@@ -132,7 +135,8 @@ final class TireSmoke {
             oldest.removeFromParent()
         }
         Task { [weak self] in
-            try? await Task.sleep(nanoseconds: 2_200_000_000)
+            // Longest life is 2.5 s plus variation; let every retired puff finish.
+            try? await Task.sleep(nanoseconds: 3_200_000_000)
             guard let self else { return }
             for entity in old {
                 entity.components.remove(ParticleEmitterComponent.self)
@@ -214,7 +218,7 @@ final class TireSmoke {
             emitter.mainEmitter.lifeSpan = Tuning.lifeSpanRange.lowerBound
                 + Double(intensity) * (Tuning.lifeSpanRange.upperBound - Tuning.lifeSpanRange.lowerBound)
             // Harder slides throw the smoke out further.
-            emitter.speed = 0.025 + 0.07 * intensity
+            emitter.speed = 0.03 + 0.09 * intensity
             entity.components.set(emitter)
         }
     }
@@ -225,12 +229,13 @@ final class TireSmoke {
         var emitter = ParticleEmitterComponent()
 
         emitter.emitterShape = .sphere
-        emitter.emitterShapeSize = SIMD3(repeating: wheelRadius * 0.25)
+        // About a tyre's width, so the cloud comes off the whole tread.
+        emitter.emitterShapeSize = SIMD3(repeating: wheelRadius * 0.35)
         emitter.birthLocation = .volume
         emitter.birthDirection = .local
         emitter.emissionDirection = SIMD3(0, 1, 0)
         emitter.speed = 0.035
-        emitter.speedVariation = 0.025
+        emitter.speedVariation = 0.03
         emitter.isEmitting = false
         emitter.simulationState = .play
 
@@ -243,21 +248,28 @@ final class TireSmoke {
         main.size = wheelRadius * Tuning.sizePerWheelRadius
         main.sizeVariation = main.size * 0.45
         main.lifeSpan = Tuning.lifeSpanRange.lowerBound
-        main.lifeSpanVariation = 0.30
-        main.spreadingAngle = 0.48
-        // Rises slowly and spreads as it goes.
-        main.acceleration = SIMD3(0, 0.012, 0)
-        main.dampingFactor = 1.8
-        main.sizeMultiplierAtEndOfLifespan = 2.9
-        main.sizeMultiplierAtEndOfLifespanPower = 0.65
+        main.lifeSpanVariation = 0.4
+        // A wide cone rolls the smoke out low across the ground first; the
+        // damping stops that push and the cloud then rises slowly.
+        main.spreadingAngle = 0.85
+        main.acceleration = SIMD3(0, 0.016, 0)
+        main.dampingFactor = 2.2
+        // Expands fast while it is fresh, then slows, as a real billow does.
+        main.sizeMultiplierAtEndOfLifespan = 4.6
+        main.sizeMultiplierAtEndOfLifespanPower = 0.5
         main.opacityCurve = .quickFadeInOut
-        // Varied rotation keeps repeated sprites from reading as copies.
+        // Thick and bright off the tyre, thinning and cooling to a soft grey as
+        // it spreads. Multiplies the sprite, so custom colors keep their hue.
+        main.color = .evolving(start: .single(UIColor(white: 1, alpha: 1)),
+                               end: .single(UIColor(red: 0.86, green: 0.88, blue: 0.9, alpha: 0.3)))
+        // Varied rotation keeps repeated sprites from reading as copies; slow
+        // turning reads as rolling smoke rather than spinning cards.
         main.angleVariation = .pi
-        main.angularSpeed = 0.35
-        main.angularSpeedVariation = 1.1
-        main.noiseStrength = 0.07
+        main.angularSpeed = 0.2
+        main.angularSpeedVariation = 0.6
+        main.noiseStrength = 0.09
         main.noiseScale = 1.3
-        main.noiseAnimationSpeed = 0.18
+        main.noiseAnimationSpeed = 0.25
         main.billboardMode = .billboard
         main.blendMode = .alpha
         main.sortOrder = .decreasingAge

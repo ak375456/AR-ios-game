@@ -17,15 +17,27 @@ import UIKit
 @MainActor
 enum EffectTextures {
 
+    /// A puff's density and self-shadowed brightness, shared by every tint.
+    private typealias SmokeShape = (size: Int, density: [Float], light: [Float])
+
     private static var smoke: [SmokeColor: TextureResource] = [:]
     private static var smokeOrder: [SmokeColor] = []
+    private static var smokeShape: SmokeShape?
     private static var skidFade: TextureResource?
 
-    /// A soft, irregular puff. Several overlapping blobs with feathered edges,
-    /// so particles do not read as hard white circles.
+    /// A billowing, self-shadowed puff with wispy, irregular edges, so particles
+    /// read as volumes of smoke rather than soft discs.
     static func smokePuff(color: SmokeColor) async -> TextureResource? {
         if let cached = smoke[color] { return cached }
-        guard let image = drawSmoke(size: 192, color: color) else { return nil }
+        let shape: SmokeShape
+        if let smokeShape {
+            shape = smokeShape
+        } else {
+            // Fractal noise is the expensive part; build it once, off the main thread.
+            shape = await Task.detached(priority: .userInitiated) { EffectTextures.makeSmokeShape(size: 256) }.value
+            smokeShape = shape
+        }
+        guard let image = tintSmoke(shape, color: color) else { return nil }
         let texture = try? await TextureResource(image: image, options: .init(semantic: .color))
         if let texture {
             smoke[color] = texture
@@ -49,59 +61,118 @@ enum EffectTextures {
     static func purge() {
         smoke.removeAll()
         smokeOrder.removeAll()
+        smokeShape = nil
         skidFade = nil
     }
 
     // MARK: - Drawing
 
-    private static func drawSmoke(size: Int, color: SmokeColor) -> CGImage? {
+    /// Density: a domain-warped fractal billow inside a ragged, noisy silhouette
+    /// that always reaches zero at the sprite border. Light: relief shading from
+    /// one side, so each lump is bright where it faces the light and shaded
+    /// behind, without darkening the dense core into a grey hole.
+    nonisolated private static func makeSmokeShape(size: Int) -> SmokeShape {
+        let count = size * size
+        var density = [Float](repeating: 0, count: count)
+        for y in 0..<size {
+            for x in 0..<size {
+                let px = (Float(x) + 0.5) / Float(size) * 2 - 1
+                let py = (Float(y) + 0.5) / Float(size) * 2 - 1
+                // Warp the domain so the billows curl instead of sitting on a grid.
+                let warpX = fbm(px * 1.7 + 3.1, py * 1.7 + 7.7, octaves: 3) - 0.5
+                let warpY = fbm(px * 1.7 + 11.3, py * 1.7 + 1.9, octaves: 3) - 0.5
+                let qx = px + 0.45 * warpX
+                let qy = py + 0.45 * warpY
+                let radius = (qx * qx + qy * qy).squareRoot()
+                let body = 1 - smoothstep(0.18, 0.98, radius)
+                let billow = fbm(qx * 2.4 + 5.0, qy * 2.4 + 9.0, octaves: 5)
+                var value = max(0, body * (0.25 + 1.4 * billow) - 0.24) / 0.76
+                let border = max(0, 1 - (px * px + py * py))
+                value *= border * border.squareRoot()
+                density[y * size + x] = pow(min(value, 1), 1.12)
+            }
+        }
+        var light = [Float](repeating: 1, count: count)
+        let step = max(1, size / 64)
+        for y in 0..<size {
+            for x in 0..<size {
+                // Compare with the density towards the light (up and slightly left).
+                var towardLight: Float = 0
+                for k in 1...3 {
+                    let sx = x - k * step, sy = y - 2 * k * step
+                    if sx >= 0 && sy >= 0 { towardLight += density[sy * size + sx] / 3 }
+                }
+                let lit = 0.96 + 1.3 * (density[y * size + x] - towardLight)
+                light[y * size + x] = min(max(lit, 0.78), 1.1)
+            }
+        }
+        return (size, density, light)
+    }
+
+    private static func tintSmoke(_ shape: SmokeShape, color: SmokeColor) -> CGImage? {
+        let size = shape.size
         let bytesPerRow = size * 4
         var pixels = [UInt8](repeating: 0, count: bytesPerRow * size)
-        let centre = Float(size) / 2
-
-        // Four soft lobes at varying offsets give an irregular silhouette that
-        // still fades to nothing at the sprite's edge.
-        let lobes: [(x: Float, y: Float, radius: Float, weight: Float)] = [
-            (0.00, 0.00, 0.40, 1.00),
-            (0.16, -0.12, 0.28, 0.75),
-            (-0.18, 0.10, 0.30, 0.70),
-            (0.04, 0.20, 0.22, 0.55),
-        ]
-
+        // A little neutral smoke in every tint keeps vivid custom colors
+        // translucent and textured instead of neon discs.
+        let red = Float(color.red) * 0.8 + 200 * 0.2
+        let green = Float(color.green) * 0.8 + 200 * 0.2
+        let blue = Float(color.blue) * 0.8 + 200 * 0.2
         pixels.withUnsafeMutableBufferPointer { buffer in
-            for y in 0..<size {
-                for x in 0..<size {
-                    let px = (Float(x) - centre) / centre
-                    let py = (Float(y) - centre) / centre
-                    let warpedX = px + 0.055 * sin(py * 9 + px * 3)
-                    let warpedY = py + 0.045 * sin(px * 11 - py * 4)
-
-                    var density: Float = 0
-                    for lobe in lobes {
-                        let dx = warpedX - lobe.x * 2
-                        let dy = warpedY - lobe.y * 2
-                        let distance = (dx * dx + dy * dy).squareRoot() / (lobe.radius * 2)
-                        density += lobe.weight * max(0, 1 - distance * distance)
-                    }
-                    // Fade hard towards the sprite border so tiles never show.
-                    let edge = max(0, 1 - (warpedX * warpedX + warpedY * warpedY))
-                    let grain = 0.78 + 0.12 * sin(px * 16 + py * 9)
-                        + 0.10 * sin(px * 27 - py * 19)
-                    density = pow(min(density, 1), 1.35) * edge * edge * max(grain, 0)
-
-                    let alpha = UInt8(min(max(density, 0), 1) * 140)
-                    let index = y * bytesPerRow + x * 4
-                    // A little neutral smoke in every tint keeps vivid custom
-                    // colors translucent and textured instead of neon discs.
-                    let shade = 0.90 + 0.10 * max(grain, 0)
-                    buffer[index] = UInt8(min((Float(color.red) * 0.78 + 196 * 0.22) * shade * Float(alpha) / 255, 255))
-                    buffer[index + 1] = UInt8(min((Float(color.green) * 0.78 + 196 * 0.22) * shade * Float(alpha) / 255, 255))
-                    buffer[index + 2] = UInt8(min((Float(color.blue) * 0.78 + 196 * 0.22) * shade * Float(alpha) / 255, 255))
-                    buffer[index + 3] = alpha
-                }
+            for i in 0..<(size * size) {
+                let alpha = min(max(shape.density[i], 0), 1) * 0.66
+                let light = shape.light[i]
+                let index = i * 4
+                // Premultiplied: clamp the lit color before scaling by alpha.
+                buffer[index] = UInt8(min(red * light, 255) * alpha)
+                buffer[index + 1] = UInt8(min(green * light, 255) * alpha)
+                buffer[index + 2] = UInt8(min(blue * light, 255) * alpha)
+                buffer[index + 3] = UInt8(alpha * 255)
             }
         }
         return makeImage(&pixels, width: size, height: size)
+    }
+
+    // MARK: - Noise
+
+    nonisolated private static func hash(_ x: Int, _ y: Int) -> Float {
+        var h = UInt32(truncatingIfNeeded: x &* 374_761_393 &+ y &* 668_265_263)
+        h = (h ^ (h >> 13)) &* 1_274_126_177
+        h ^= h >> 16
+        return Float(h & 0xFFFF) / 65_535
+    }
+
+    /// Smooth value noise in 0...1.
+    nonisolated private static func noise(_ x: Float, _ y: Float) -> Float {
+        let fx = x.rounded(.down), fy = y.rounded(.down)
+        let ix = Int(fx), iy = Int(fy)
+        let tx = x - fx, ty = y - fy
+        let u = tx * tx * (3 - 2 * tx), v = ty * ty * (3 - 2 * ty)
+        let a = hash(ix, iy), b = hash(ix + 1, iy)
+        let c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1)
+        let top = a + (b - a) * u
+        let bottom = c + (d - c) * u
+        return top + (bottom - top) * v
+    }
+
+    /// Fractal noise in 0...1. Each octave is rotated so no grid lines show.
+    nonisolated private static func fbm(_ x: Float, _ y: Float, octaves: Int) -> Float {
+        var sum: Float = 0, amplitude: Float = 0.5, total: Float = 0
+        var px = x, py = y
+        for _ in 0..<octaves {
+            sum += amplitude * noise(px, py)
+            total += amplitude
+            let rx = 0.8 * px - 0.6 * py, ry = 0.6 * px + 0.8 * py
+            px = rx * 2.03 + 17.1
+            py = ry * 2.03 + 4.7
+            amplitude *= 0.5
+        }
+        return sum / total
+    }
+
+    nonisolated private static func smoothstep(_ edge0: Float, _ edge1: Float, _ x: Float) -> Float {
+        let t = min(max((x - edge0) / (edge1 - edge0), 0), 1)
+        return t * t * (3 - 2 * t)
     }
 
     private static func drawSkidRamp(width: Int, height: Int) -> CGImage? {

@@ -681,8 +681,11 @@ from it. Emission comes from the rear axle's measured lateral slip speed plus
 the longitudinal slip estimate, never from whether a button is held: a small
 correction makes a wisp, a sustained slide makes a trail, a parked car makes
 nothing, and wheelspin smokes even at a standstill. Density, size and lifetime
-all scale with slip severity and with the car's wheel radius. Sprites are drawn
-procedurally as soft irregular puffs.
+all scale with slip severity and with the car's wheel radius. Puffs are born
+small and dense at the tyre, billow out to about 4.6× and thin and cool to grey
+as they age, lingering up to about 2.5 s. The sprite is drawn procedurally, once
+and off the main thread: domain-warped fractal noise inside a ragged silhouette,
+with relief shading from one side so each billow has light and shadow.
 
 **Skid marks** ([`SkidMarks.swift`](vr/Effects/SkidMarks.swift)) lay a capped
 world-space ribbon under the rear tyres during sustained slip, rebuilt at 12 Hz
