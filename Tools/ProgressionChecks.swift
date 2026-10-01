@@ -44,6 +44,19 @@ import simd
         try Economy.paint("mini-hatch",color:"azure",save:&noPaint); let painted = noPaint.coins
         try Economy.paint("mini-hatch",color:"azure",save:&noPaint)
         check("paint permanent once",painted == 70 && noPaint.coins == painted)
+        var earned = ProgressionSave()
+        for m in MissionCatalog.career.prefix(2) { earned.missions[m.id] = MissionProgress(value:m.target,completed:true) }
+        try Economy.grant(id:"reward.check",title:"Check",coins:ProgressionCatalog.prices[1],now:Date(),save:&earned)
+        check("uncollected coins saved but not spendable",earned.coins == ProgressionCatalog.prices[1] && earned.wallet == 0
+              && rejected{try Economy.purchaseCar("runabout",save:&earned)})
+        for i in earned.ledger.indices { earned.ledger[i].presented = true }
+        try Economy.purchaseCar("runabout",save:&earned)
+        check("collected coins spendable",earned.wallet == 0 && earned.owned.contains("runabout"))
+        try Economy.roadCoins(drive:"check",coins:5,now:Date(),save:&earned)
+        for i in earned.ledger.indices { earned.ledger[i].presented = true }
+        try Economy.roadCoins(drive:"check",coins:3,now:Date(),save:&earned)
+        check("collected road coins never reopen",earned.uncollected == 3 && earned.wallet == 5
+              && Set(earned.ledger.map(\.id)).count == earned.ledger.count)
         var reward = fresh
         try Economy.grant(id:"same",title:"Test",coins:15,now:Date(),save:&reward)
         try Economy.grant(id:"same",title:"Test",coins:15,now:Date(),save:&reward)

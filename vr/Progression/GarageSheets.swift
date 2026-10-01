@@ -75,11 +75,11 @@ struct UpgradeGarageSheet: View {
             }
             if level == 5 {
                 Label("Fully upgraded", systemImage: "checkmark.seal.fill").font(GameType.display(24)).foregroundStyle(GaragePalette.success)
-            } else if progression.save.coins < cost {
-                HStack { CoinLabel(amount: cost); Spacer(); Text("\(cost-progression.save.coins) more needed").font(.caption.weight(.bold)) }
+            } else if progression.save.wallet < cost {
+                HStack { CoinLabel(amount: cost); Spacer(); Text("\(cost-progression.save.wallet) more needed").font(.caption.weight(.bold)) }
                 Button(action: onMissions) { Text("Earn coins").frame(maxWidth: .infinity) }.buttonStyle(AmberActionStyle())
             } else {
-                HStack { Text("Balance after").font(.caption); Spacer(); CoinLabel(amount: progression.save.coins-cost) }
+                HStack { Text("Balance after").font(.caption); Spacer(); CoinLabel(amount: progression.save.wallet-cost) }
                 Button {
                     guard !cooling, progression.upgrade(car.id, part: selected, level: reviewedLevel) else { return }
                     let fitted = reviewedLevel + 1
@@ -146,8 +146,8 @@ struct PaintGarageSheet: View {
                                 if settings.usesHaptics { Haptics.success() }
                             }
                         } label: { Text(progression.paint(car.id) == preview ? "Applied ✓" : gift ? "Use paint gift" : isOwned(preview) ? "Apply paint" : "Unlock · 30").frame(maxWidth: .infinity) }
-                            .buttonStyle(AmberActionStyle()).disabled(progression.paint(car.id) == preview || (!isOwned(preview) && (!progression.paintUnlocked || (!gift && progression.save.coins < 30))))
-                        if !isOwned(preview) && progression.paintUnlocked && progression.save.coins < 30 && !gift { Text("\(30-progression.save.coins) more coins needed").font(.caption) }
+                            .buttonStyle(AmberActionStyle()).disabled(progression.paint(car.id) == preview || (!isOwned(preview) && (!progression.paintUnlocked || (!gift && progression.save.wallet < 30))))
+                        if !isOwned(preview) && progression.paintUnlocked && progression.save.wallet < 30 && !gift { Text("\(30-progression.save.wallet) more coins needed").font(.caption) }
                         if !message.isEmpty { Label(message, systemImage: "checkmark.circle.fill").foregroundStyle(GaragePalette.success) }
                     }
                 }.padding(20)
@@ -171,7 +171,7 @@ struct CarPurchaseSheet: View {
                     Text(car.displayName).font(GameType.display(30))
                     StatsOverview(car: car, parts: CarParts(), unit: settings.speedUnit)
                     let slot = ProgressionCatalog.slot(car.id) ?? 0
-                    requirement("\(ProgressionCatalog.prices[slot]) coins", met: progression.save.coins >= ProgressionCatalog.prices[slot])
+                    requirement("\(ProgressionCatalog.prices[slot]) coins", met: progression.save.wallet >= ProgressionCatalog.prices[slot])
                     requirement("\(ProgressionCatalog.stars[slot]) career stars", met: progression.save.stars >= ProgressionCatalog.stars[slot])
                     if slot > 0 { requirement("Own \(CarCatalog.car(id: ProgressionCatalog.ids[slot-1]).displayName)", met: progression.save.owned.contains(ProgressionCatalog.ids[slot-1])) }
                     if let block = Economy.carBlock(car.id, save: progression.save) { Text(block).font(.caption.weight(.bold)).foregroundStyle(GaragePalette.amberTop) }

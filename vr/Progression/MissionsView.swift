@@ -231,11 +231,13 @@ struct MissionsView: View {
     }
 }
 /// Garage card: every mission finished since the last visit, bundled in one list
-/// with a single Collect all. Coins are already in the wallet; this acknowledges them.
+/// with a single Collect all. The coins are saved but only reach the spendable
+/// wallet once collected; `onCollect` gets the total's frame so they can fly there.
 struct RewardsReadyCard: View {
     let progression: ProgressionModel
     let haptics: Bool
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    let onCollect: (CGRect) -> Void
+    @State private var totalFrame = CGRect.zero
     private let visibleRows = 4
 
     var body: some View {
@@ -248,6 +250,7 @@ struct RewardsReadyCard: View {
                         .font(GameType.display(20)).lineLimit(1).minimumScaleFactor(0.8)
                     Spacer(minLength: 0)
                     CoinLabel(amount: rewards.reduce(0) { $0 + $1.coins })
+                        .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(GarageSpace.name)) } action: { totalFrame = $0 }
                 }
                 VStack(spacing: 0) {
                     ForEach(Array(rewards.prefix(visibleRows))) { reward in
@@ -278,7 +281,7 @@ struct RewardsReadyCard: View {
     }
     private func collect() {
         if haptics { Haptics.success() }
-        withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.4)) { progression.acknowledgeAll() }
+        onCollect(totalFrame)
     }
 }
 

@@ -71,6 +71,8 @@ import Foundation
         mutating func grant(_ id: String, _ amount: Int, _ category: String) {
             if save.transactions.contains(id) { return }
             try! Economy.grant(id:id,title:id,coins:amount,now:Date(timeIntervalSince1970:seconds),save:&save)
+            // Model a player who taps Collect all at once, so the coins are spendable.
+            save.ledger[save.ledger.count-1].presented = true
             income[category,default:0] += amount
         }
         /// "Drive N different cars" needs N owned cars; nothing else is gated.

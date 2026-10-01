@@ -10,6 +10,12 @@ struct HomeView: View {
     @State private var previewStatus: CarPreviewStatus = .loading
     @State private var showingSettings = false
     @State private var sheet: GarageSheet?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// Collect all: coins in flight, the balance shown while they land, and where they land.
+    @State private var flights: [CoinFlight] = []
+    @State private var shownBalance: Int?
+    @State private var landings = 0
+    @State private var walletCoinFrame = CGRect.zero
     private var car: CarDefinition { CarCatalog.car(id: selectedID) }
     private var owned: Bool { progression.save.owned.contains(selectedID) }
 
@@ -21,7 +27,7 @@ struct HomeView: View {
                 case .garage:
                     ScrollView {
                         VStack(spacing: 16) {
-                            RewardsReadyCard(progression: progression, haptics: settings.usesHaptics)
+                            RewardsReadyCard(progression: progression, haptics: settings.usesHaptics, onCollect: collect)
                             selection
                             stage.frame(height: min(300, max(205, geometry.size.height * 0.39)))
                             if owned {
@@ -48,6 +54,10 @@ struct HomeView: View {
                     }
                 case .collection: collection
                 }
+            }
+            .coordinateSpace(.named(GarageSpace.name))
+            .overlay {
+                ForEach(flights) { FlyingCoin(flight: $0) }.allowsHitTesting(false)
             }
             .safeAreaInset(edge: .bottom, spacing: 0) { footer }
             .background(GarageBackdrop())
@@ -79,13 +89,49 @@ struct HomeView: View {
             HStack(spacing: 12) {
                 Text(tab == .garage ? "DRIVE" : tab.rawValue).font(GameType.display(tab == .garage ? 32 : 26)).lineLimit(1).minimumScaleFactor(0.75)
                 Spacer(minLength: 0)
-                if !typeSize.isAccessibilitySize { WalletView(progression: progression) }
+                if !typeSize.isAccessibilitySize { wallet }
                 Button { showingSettings = true } label: {
                     Image(systemName: "slider.horizontal.3").font(.system(size: 20, weight: .bold)).frame(width: 44, height: 44)
                         .background(GaragePalette.indigo, in: RoundedRectangle(cornerRadius: 10))
                 }.buttonStyle(.plain).accessibilityLabel("Controls and settings")
             }
-            if typeSize.isAccessibilitySize { WalletView(progression: progression).frame(maxWidth: .infinity, alignment: .trailing) }
+            if typeSize.isAccessibilitySize { wallet.frame(maxWidth: .infinity, alignment: .trailing) }
+        }
+    }
+    private var wallet: some View {
+        WalletView(progression: progression, balance: shownBalance, landings: landings) { walletCoinFrame = $0 }
+    }
+    /// Collects every pending reward at once, then flies a handful of coins from the
+    /// card's total into the wallet, which counts up as each one lands.
+    private func collect(from source: CGRect) {
+        let amount = progression.save.uncollected
+        let start = progression.save.wallet
+        guard amount > 0 else { return }
+        let animate = !reduceMotion && source != .zero && walletCoinFrame != .zero
+        if animate { shownBalance = start }
+        withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.4)) { progression.acknowledgeAll() }
+        guard animate else { return }
+        let count = min(10, max(3, amount / 25))
+        let target = CGPoint(x: walletCoinFrame.minX + 9, y: walletCoinFrame.midY)
+        let origin = CGPoint(x: source.minX + 9, y: source.midY)
+        let batch = (flights.map(\.id).max() ?? 0) + 1
+        let launched = (0..<count).map { i in
+            CoinFlight(id: batch * 100 + i, from: origin, to: target, delay: Double(i) * 0.07,
+                       spread: CGFloat((i * 37) % 61 - 30), lift: CGFloat(18 + (i * 23) % 26))
+        }
+        flights += launched
+        Task { @MainActor in
+            let begin = ContinuousClock.now
+            for (i, flight) in launched.enumerated() {
+                try? await Task.sleep(until: begin + .seconds(flight.delay + CoinFlight.duration))
+                withAnimation(.snappy(duration: 0.2)) {
+                    shownBalance = start + amount * (i + 1) / count
+                    landings += 1
+                }
+                if settings.usesHaptics { Haptics.light() }
+            }
+            flights.removeAll { launched.map(\.id).contains($0.id) }
+            if flights.isEmpty { shownBalance = nil }
         }
     }
     private var selection: some View {
@@ -203,11 +249,74 @@ private enum GarageTab: String, CaseIterable, Identifiable {
 private enum GarageSheet: String, Identifiable { case upgrades, paint, purchase; var id: String { rawValue } }
 struct WalletView: View {
     let progression: ProgressionModel
+    /// Overrides the balance while collected coins are still flying in.
+    var balance: Int? = nil
+    /// Bumps the coin icon each time a flying coin lands.
+    var landings = 0
+    var onCoinFrame: ((CGRect) -> Void)? = nil
     var body: some View {
+        let coins = balance ?? progression.save.wallet
         VStack(alignment: .trailing, spacing: 4) {
-            CoinLabel(amount: progression.save.coins).lineLimit(1).minimumScaleFactor(0.65)
+            HStack(spacing: 4) {
+                Image(systemName: "circle.inset.filled").foregroundStyle(GaragePalette.amberTop)
+                    .symbolEffect(.bounce, value: landings)
+                Text(coins.formatted()).monospacedDigit().contentTransition(.numericText(value: Double(coins)))
+            }.font(.system(.subheadline, weight: .heavy)).lineLimit(1).minimumScaleFactor(0.65)
+            .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(GarageSpace.name)) } action: { onCoinFrame?($0) }
             Label("\(progression.save.stars)", systemImage: "star.fill").font(.caption.weight(.heavy)).monospacedDigit().foregroundStyle(GaragePalette.neon)
-        }.accessibilityElement(children: .ignore).accessibilityLabel("\(progression.save.coins) coins, \(progression.save.stars) career stars")
+        }.accessibilityElement(children: .ignore).accessibilityLabel("\(progression.save.wallet) coins, \(progression.save.stars) career stars")
+    }
+}
+/// The garage's shared coordinate space, so collected coins can fly between views.
+enum GarageSpace { static let name = "garage" }
+struct CoinFlight: Identifiable {
+    static let duration = 0.7
+    let id: Int
+    let from: CGPoint, to: CGPoint
+    let delay: Double
+    /// Sideways scatter and upward pop before each coin heads for the wallet.
+    let spread: CGFloat, lift: CGFloat
+}
+private struct CoinFlightFrame {
+    var x: CGFloat = 0, y: CGFloat = 0, scale: CGFloat = 0.4, opacity: Double = 0
+}
+/// One coin: pops out of the card, then arcs into the wallet and vanishes on landing.
+struct FlyingCoin: View {
+    let flight: CoinFlight
+    @State private var launched = false
+    var body: some View {
+        let dx = flight.to.x - flight.from.x, dy = flight.to.y - flight.from.y
+        Image(systemName: "circle.inset.filled")
+            .font(.system(size: 22, weight: .heavy)).foregroundStyle(GaragePalette.amberTop)
+            .shadow(color: .black.opacity(0.35), radius: 0, y: 2)
+            .keyframeAnimator(initialValue: CoinFlightFrame(), trigger: launched) { content, frame in
+                content.scaleEffect(frame.scale).opacity(frame.opacity).offset(x: frame.x, y: frame.y)
+            } keyframes: { _ in
+                KeyframeTrack(\.x) {
+                    LinearKeyframe(0, duration: flight.delay)
+                    CubicKeyframe(flight.spread, duration: 0.2)
+                    CubicKeyframe(dx, duration: CoinFlight.duration - 0.2)
+                }
+                KeyframeTrack(\.y) {
+                    LinearKeyframe(0, duration: flight.delay)
+                    CubicKeyframe(-flight.lift, duration: 0.2)
+                    CubicKeyframe(dy, duration: CoinFlight.duration - 0.2)
+                }
+                KeyframeTrack(\.scale) {
+                    LinearKeyframe(0.4, duration: flight.delay)
+                    SpringKeyframe(1.15, duration: 0.2)
+                    CubicKeyframe(0.75, duration: CoinFlight.duration - 0.2)
+                }
+                KeyframeTrack(\.opacity) {
+                    LinearKeyframe(0, duration: flight.delay)
+                    LinearKeyframe(1, duration: 0.05)
+                    LinearKeyframe(1, duration: CoinFlight.duration - 0.08)
+                    LinearKeyframe(0, duration: 0.03)
+                }
+            }
+            .position(flight.from)
+            .onAppear { launched = true }
+            .accessibilityHidden(true)
     }
 }
 struct StatsOverview: View {

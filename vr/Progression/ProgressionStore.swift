@@ -41,6 +41,11 @@ struct ProgressionSave: Codable, Equatable {
     var freeMasteryPaints: Set<String> = []
     var paintShopUnlocked = false
 
+    /// Earned coins waiting on the garage's Collect all. They are saved in `coins`
+    /// the moment they are earned, so nothing is lost, but cannot be spent yet.
+    var uncollected: Int { ledger.reduce(0) { $1.presented ? $0 : $0 + $1.coins } }
+    /// The spendable, displayed balance.
+    var wallet: Int { max(0, coins - uncollected) }
     var stars: Int { MissionCatalog.career.reduce(0) { $0 + (missions[$1.id]?.completed == true ? 1 : 0) } }
     var chapter: Int {
         var result = 1
@@ -165,7 +170,7 @@ enum Economy {
             return "Own \(CarCatalog.car(id:ProgressionCatalog.ids[slot-1]).displayName) first"
         }
         if save.stars < ProgressionCatalog.stars[slot] { return "\(ProgressionCatalog.stars[slot]-save.stars) more career stars needed" }
-        if save.coins < ProgressionCatalog.prices[slot] { return "Need \(ProgressionCatalog.prices[slot]-save.coins) more coins" }
+        if save.wallet < ProgressionCatalog.prices[slot] { return "Need \(ProgressionCatalog.prices[slot]-save.wallet) more coins" }
         return nil
     }
     static func purchaseCar(_ id: String, save: inout ProgressionSave) throws {
@@ -180,7 +185,7 @@ enum Economy {
         var parts = save.parts[id] ?? CarParts()
         guard parts[part] == expectedLevel, expectedLevel < 5 else { throw ProgressionError.rejected("This upgrade is already applied") }
         let cost = ProgressionCatalog.upgradeCost(carID:id,part:part,level:expectedLevel)
-        guard save.coins >= cost else { throw ProgressionError.rejected("Need \(cost-save.coins) more coins") }
+        guard save.wallet >= cost else { throw ProgressionError.rejected("Need \(cost-save.wallet) more coins") }
         save.coins -= cost; parts[part] += 1; save.parts[id] = parts
         save.transactions.insert("part.\(id).\(part.rawValue).\(expectedLevel+1)")
     }
@@ -191,7 +196,7 @@ enum Economy {
         if save.paints[id]?.contains(color) != true {
             guard save.paintShopUnlocked else { throw ProgressionError.rejected("Complete the first six career missions to open Paint") }
             let gift = free && save.freeMasteryPaints.contains(id)
-            guard gift || save.coins >= 30 else { throw ProgressionError.rejected("Need \(30-save.coins) more coins") }
+            guard gift || save.wallet >= 30 else { throw ProgressionError.rejected("Need \(30-save.wallet) more coins") }
             if gift { save.freeMasteryPaints.remove(id) } else { save.coins -= 30 }
             save.paints[id,default:[]].insert(color)
         }
@@ -203,16 +208,18 @@ enum Economy {
         save.coins += coins; save.transactions.insert(id)
         save.ledger.append(RewardRecord(id:id,title:title,coins:coins,date:now))
     }
-    /// Road coins credit at once but share one ledger row per drive, so the
-    /// summary shows a single total rather than a line per pickup.
+    /// Road coins credit at once but share one uncollected ledger row per drive, so
+    /// the summary shows a single total rather than a line per pickup. A row that
+    /// was already collected is never reopened, or its coins would count twice.
     static func roadCoins(drive: String, coins: Int, now: Date, save: inout ProgressionSave) throws {
         guard coins > 0, coins <= 100, save.coins <= 100_000_000-coins else { throw ProgressionError.rejected("Coin balance limit reached") }
         save.coins += coins
         let id = "road.\(drive)"
-        if let i = save.ledger.firstIndex(where:{$0.id == id}) {
-            save.ledger[i].coins += coins; save.ledger[i].date = now; save.ledger[i].presented = false
+        let rows = save.ledger.indices.filter { save.ledger[$0].id == id || save.ledger[$0].id.hasPrefix(id+".") }
+        if let i = rows.first(where: { !save.ledger[$0].presented }) {
+            save.ledger[i].coins += coins; save.ledger[i].date = now
         } else {
-            save.ledger.append(RewardRecord(id:id,title:"Road coins",coins:coins,date:now))
+            save.ledger.append(RewardRecord(id:rows.isEmpty ? id : "\(id).\(rows.count)",title:"Road coins",coins:coins,date:now))
         }
     }
 }
