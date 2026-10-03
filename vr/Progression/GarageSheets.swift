@@ -3,6 +3,7 @@ import SwiftUI
 struct UpgradeGarageSheet: View {
     let car: CarDefinition
     let progression: ProgressionModel
+    let store: PurchaseStore
     let settings: ControlSettings
     let onMissions: () -> Void
     @Environment(\.dismiss) private var dismiss
@@ -19,7 +20,8 @@ struct UpgradeGarageSheet: View {
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(car.displayName).font(GameType.display(24))
-                            Text("MAKE IT YOURS").font(.caption2.weight(.heavy)).tracking(1).foregroundStyle(GaragePalette.neon)
+                            Text(progression.maxUpgrades ? "MAX UPGRADES ACTIVE" : "MAKE IT YOURS").font(.caption2.weight(.heavy)).tracking(1)
+                                .foregroundStyle(progression.maxUpgrades ? GaragePalette.success : GaragePalette.neon)
                         }
                         Spacer()
                         WalletView(progression: progression)
@@ -43,6 +45,9 @@ struct UpgradeGarageSheet: View {
                         }.padding(.vertical, 3)
                     }
                     detail
+                    if !progression.maxUpgrades {
+                        PaidUnlockCard(unlock: .maxUpgrades, store: store, progression: progression, haptics: settings.usesHaptics)
+                    }
                     DisclosureGroup("About ratings") {
                         Text("Ratings share a 0–100 scale across all cars. Top speed is estimated from reference wheel geometry. Handling uses the loaded model while driving.").font(.caption).padding(.top, 8)
                     }.font(.subheadline).foregroundStyle(GaragePalette.muted)
@@ -50,6 +55,8 @@ struct UpgradeGarageSheet: View {
             }
         }.foregroundStyle(GaragePalette.paper).background(GaragePalette.midnight)
             .onAppear { reviewedLevel = progression.parts(car.id)[selected] }
+            .onChange(of: progression.maxUpgrades) { reviewedLevel = progression.parts(car.id)[selected] }
+            .storeNotice(store)
     }
     private var detail: some View {
         let parts = progression.parts(car.id), level = parts[selected]
@@ -160,6 +167,7 @@ struct PaintGarageSheet: View {
 struct CarPurchaseSheet: View {
     let car: CarDefinition
     let progression: ProgressionModel
+    let store: PurchaseStore
     let settings: ControlSettings
     @Environment(\.dismiss) private var dismiss
     var body: some View {
@@ -179,13 +187,20 @@ struct CarPurchaseSheet: View {
                         if progression.buyCar(car.id) { if settings.usesHaptics { Haptics.success() }; dismiss() }
                     } label: { HStack { Text("Unlock car"); Spacer(); CoinLabel(amount: ProgressionCatalog.prices[slot], iconColor: GaragePalette.midnight) } }
                         .buttonStyle(AmberActionStyle()).disabled(Economy.carBlock(car.id, save: progression.save) != nil || progression.save.owned.contains(car.id))
+                    if !progression.ownsEveryCar {
+                        Text("OR SKIP THE WAIT").font(.caption2.weight(.heavy)).tracking(1).foregroundStyle(GaragePalette.muted).padding(.top, 4)
+                        PaidUnlockCard(unlock: .allCars, store: store, progression: progression, haptics: settings.usesHaptics)
+                    }
                     DisclosureGroup("Fully upgraded potential") {
                         StatsOverview(car: car, parts: .maximum, unit: settings.speedUnit).padding(.top, 12)
-                        Text("New cars start at level 1. Upgrades sold separately.").font(.caption)
+                        Text(progression.maxUpgrades ? "Max Upgrades fits every part as soon as you unlock it." : "New cars start at level 1. Upgrades sold separately.").font(.caption)
                     }.font(.subheadline)
                 }.padding(20)
             }
         }.foregroundStyle(GaragePalette.paper).background(GaragePalette.midnight)
+            .storeNotice(store)
+            // Bought with coins or with All Cars: the keys are in hand, so return to the garage.
+            .onChange(of: progression.save.owned.contains(car.id)) { _, owned in if owned { dismiss() } }
     }
     private func requirement(_ text: String, met: Bool) -> some View {
         Label(text, systemImage: met ? "checkmark.circle.fill" : "lock.fill").font(.subheadline.weight(.semibold))

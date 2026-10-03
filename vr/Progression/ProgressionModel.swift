@@ -99,6 +99,13 @@ final class ProgressionModel {
     private(set) var isAvailable = true
     /// The one-time free test drive: a car the player does not own, driven fully upgraded.
     private(set) var trialCarID: String?
+    /// App Store unlocks, set only from StoreKit's verified receipts. They are not saved
+    /// here, so a refund takes them away again. All Cars is different: see `grantAllCars`.
+    private(set) var doubleCoins = false
+    private(set) var maxUpgrades = false
+    var coinMultiplier: Int { doubleCoins ? 2 : 1 }
+    /// Every car in the garage, whether bought with coins or with All Cars.
+    var ownsEveryCar: Bool { ProgressionCatalog.ids.allSatisfy(save.owned.contains) }
     @ObservationIgnored private var store: ProgressionStore?
     @ObservationIgnored private var draft = ProgressionSave()
     @ObservationIgnored private var attempts: [String: MissionAttempt] = [:]
@@ -174,7 +181,39 @@ final class ProgressionModel {
                 && !progress($0).completed
         }
     }
-    func parts(_ id: String) -> CarParts { save.parts[id] ?? CarParts() }
+    /// The levels every view and drive uses. Max Upgrades covers each car, including
+    /// ones unlocked later, without touching the levels bought with coins.
+    func parts(_ id: String) -> CarParts { maxUpgrades ? .maximum : save.parts[id] ?? CarParts() }
+    /// What a mission pays, as shown and as credited.
+    func reward(_ m: MissionDefinition) -> Int { m.reward * coinMultiplier }
+    func setPaidUnlocks(doubleCoins: Bool, maxUpgrades: Bool) {
+        if self.doubleCoins != doubleCoins { self.doubleCoins = doubleCoins }
+        if self.maxUpgrades != maxUpgrades { self.maxUpgrades = maxUpgrades }
+    }
+    /// All Cars is written into ownership, so every ownership rule (driving, mastery,
+    /// paint, the collection count) works unchanged. Each granted car keeps a receipt,
+    /// so a refund removes exactly those cars and never one bought with coins.
+    func grantAllCars() {
+        guard isAvailable, ProgressionCatalog.ids.contains(where: { !draft.owned.contains($0) }) else { return }
+        _ = transaction { s in
+            for id in ProgressionCatalog.ids where !s.owned.contains(id) {
+                s.owned.insert(id)
+                s.parts[id] = s.parts[id] ?? CarParts()
+                s.selectedPaints[id] = s.selectedPaints[id] ?? "factory"
+                s.transactions.insert("iap.car.\(id)")
+            }
+        }
+    }
+    func revokeAllCars() {
+        guard isAvailable, draft.transactions.contains(where: { $0.hasPrefix("iap.car.") }) else { return }
+        _ = transaction { s in
+            for id in ProgressionCatalog.ids where s.transactions.contains("iap.car.\(id)") {
+                s.transactions.remove("iap.car.\(id)")
+                if !s.transactions.contains("car.\(id)") && id != ProgressionCatalog.starter { s.owned.remove(id) }
+            }
+        }
+    }
+
     func paint(_ id: String) -> CarPaint {
         let selected = save.selectedPaints[id] ?? "factory"
         return selected == "factory" ? .factory : CarPaint.paint(id:selected)
@@ -210,7 +249,8 @@ final class ProgressionModel {
         if now < expected.addingTimeInterval(-300) { clockNotice = "Daily goals return when the clock catches up. Career remains available."; return }
         var notice: String?
         let oldDay = draft.daily.day
-        _ = transaction { notice = try DailySelector.refresh(now:now,zone:zone,save:&$0) }
+        let bonus = 10 * coinMultiplier
+        _ = transaction { notice = try DailySelector.refresh(now:now,zone:zone,save:&$0,bonus:bonus) }
         if oldDay != draft.daily.day {
             attempts = attempts.filter { !$0.key.hasPrefix("daily.") }
             let hadCards = !driveMissions.isEmpty
@@ -288,9 +328,11 @@ final class ProgressionModel {
         save = draft; flush()
     }
     /// Coins picked up off the floor. Owned cars only; the trial earns nothing.
+    /// Double Coins doubles the credit; coin goals still count the coin's face value.
     @discardableResult func collectRoadCoins(_ coins: Int, carID: String) -> Bool {
+        let credit = coins * coinMultiplier
         guard canDrive(carID), carID == sessionCarID,
-              transaction({ try Economy.roadCoins(drive:roadDrive,coins:coins,now:Date(),save:&$0) }) else { return false }
+              transaction({ try Economy.roadCoins(drive:roadDrive,coins:credit,now:Date(),save:&$0) }) else { return false }
         record(DrivingEvents(coinPickups:1,coinValue:coins,tenCoins:coins >= 10 ? 1 : 0), carID:carID)
         return true
     }
@@ -353,20 +395,20 @@ final class ProgressionModel {
         if persistTime >= 2 { persistTime = 0; flush() }
     }
     @discardableResult private func complete(_ m: MissionDefinition) -> Bool {
-        let k = key(m), now = Date()
+        let k = key(m), now = Date(), multiplier = coinMultiplier
         return transaction { s in
             guard s.missions[k]?.completed != true else { return }
             s.missions[k,default:MissionProgress()].completed = true
             s.pinned.removeAll { $0 == m.id }
-            try Economy.grant(id:"reward.\(k)",title:m.title,coins:m.reward,now:now,save:&s)
+            try Economy.grant(id:"reward.\(k)",title:m.title,coins:m.reward*multiplier,now:now,save:&s)
             if m.mode == .career {
                 let chapter = MissionCatalog.career.filter{$0.chapter == m.chapter}
                 if chapter.allSatisfy({s.missions[$0.id]?.completed == true}) {
-                    try Economy.grant(id:"chapter.\(m.chapter)",title:"\(MissionCatalog.chapters[m.chapter-1]) complete",coins:100*m.chapter,now:now,save:&s)
+                    try Economy.grant(id:"chapter.\(m.chapter)",title:"\(MissionCatalog.chapters[m.chapter-1]) complete",coins:100*m.chapter*multiplier,now:now,save:&s)
                 }
             }
             if m.mode == .daily && s.daily.slots.allSatisfy({s.missions["\(s.daily.day).\($0)"]?.completed == true}) {
-                try Economy.grant(id:"daily-set.\(s.daily.day)",title:"Daily set complete",coins:ProgressionCatalog.roundCoins(20*(1+0.2*Double(s.daily.chapter-1))),now:now,save:&s)
+                try Economy.grant(id:"daily-set.\(s.daily.day)",title:"Daily set complete",coins:ProgressionCatalog.roundCoins(20*(1+0.2*Double(s.daily.chapter-1)))*multiplier,now:now,save:&s)
             }
             if m.mode == .mastery, let id = m.carID,
                masteryDefinitions.filter({$0.carID == id}).allSatisfy({s.missions[$0.id]?.completed == true}),

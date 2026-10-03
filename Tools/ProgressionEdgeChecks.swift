@@ -107,4 +107,42 @@ extension ProgressionChecks {
         check("figure eight has eight directed gates",eight.gates.count == 8)
         check("floor check includes extreme corners",!eight.fits { $0.x < eight.boundsMax.x-0.001 })
     }
+
+    /// App Store unlocks: All Cars is granted into ownership and a refund removes only
+    /// those cars; Double Coins doubles credits, not goal counts; Max Upgrades is an overlay.
+    static func paidUnlockChecks() throws {
+        let dir = directory("paid"); defer { try? FileManager.default.removeItem(at:dir) }
+        var seed = ProgressionSave(); seed.coins = 5000
+        for m in MissionCatalog.career.prefix(2) { seed.missions[m.id] = MissionProgress(value:m.target,completed:true) }
+        try ProgressionStore(directory:dir).write(seed)
+        let m = ProgressionModel(directory:dir)
+        check("coin purchase before All Cars",m.buyCar("runabout"))
+        m.grantAllCars()
+        check("All Cars owns every car",m.ownsEveryCar && m.canDrive("racer"))
+        check("All Cars survives relaunch",ProgressionModel(directory:dir).ownsEveryCar)
+        check("All Cars keeps coin-bought receipt separate",!m.save.transactions.contains("iap.car.runabout"))
+        m.revokeAllCars()
+        check("refund removes only granted cars",m.save.owned.intersection(ProgressionCatalog.ids) == ["mini-hatch","runabout"])
+        m.setPaidUnlocks(doubleCoins:false,maxUpgrades:true)
+        check("Max Upgrades overlays every car",m.parts("mini-hatch") == .maximum && m.parts("racer") == .maximum)
+        check("Max Upgrades leaves bought levels untouched",(m.save.parts["mini-hatch"] ?? CarParts()) == CarParts())
+        m.setPaidUnlocks(doubleCoins:false,maxUpgrades:false)
+        check("Max Upgrades refund restores bought levels",m.parts("mini-hatch") == CarParts())
+
+        let doubleDir = directory("double"); defer { try? FileManager.default.removeItem(at:doubleDir) }
+        let d = ProgressionModel(directory:doubleDir)
+        d.setPaidUnlocks(doubleCoins:true,maxUpgrades:false)
+        d.refreshDay()
+        check("Double Coins doubles the daily bonus",d.save.ledger.contains { $0.id.hasPrefix("login.") && $0.coins == 20 })
+        d.beginSession(carID:"mini-hatch")
+        d.consume(DrivingEvents(distance:5),carID:"mini-hatch",dt:0.1,scoredChallenge:nil)
+        let first = MissionCatalog.career[0]
+        check("Double Coins doubles mission rewards",d.save.ledger.first { $0.id == "reward.\(first.id)" }?.coins == 2 * first.reward)
+        check("shown reward matches credit",d.reward(first) == 2 * first.reward)
+        let beforeRoad = d.save.coins
+        d.collectRoadCoins(5,carID:"mini-hatch")
+        check("Double Coins doubles road coins",d.save.coins - beforeRoad == 10)
+        let pickups = MissionCatalog.career.first { $0.metric == .coinPickups }!
+        check("coin goals still count one pickup",d.progress(pickups).value == 1 || d.progress(pickups).completed)
+    }
 }

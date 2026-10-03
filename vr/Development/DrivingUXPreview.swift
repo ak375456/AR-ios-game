@@ -53,6 +53,7 @@ struct DrivingUXPreview: View {
 }
 struct GarageUXPreview: View {
     @State private var progression: ProgressionModel
+    @State private var store: PurchaseStore
     @State private var settings: ControlSettings
     init() {
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("GarageFixture-\(UUID().uuidString)")
@@ -63,13 +64,17 @@ struct GarageUXPreview: View {
         let progression = ProgressionModel(directory: dir)
         progression.refreshDay()
         _progression = State(initialValue: progression)
+        // --unlocks=doubleCoins,maxUpgrades shows owned purchases; nothing reaches the App Store.
+        let unlocks = ProcessInfo.processInfo.arguments.first(where: { $0.hasPrefix("--unlocks=") })?.dropFirst(10)
+            .split(separator: ",").compactMap { name in PaidUnlock.allCases.first { "\($0)" == name } } ?? []
+        _store = State(initialValue: PurchaseStore.fixture(progression: progression, owned: Set(unlocks)))
         let defaults = UserDefaults(suiteName: "DriveAR.GarageFixtures")!
         defaults.removePersistentDomain(forName: "DriveAR.GarageFixtures")
         _settings = State(initialValue: ControlSettings(defaults: defaults))
         precondition(UIFont(name: "LilitaOne", size: 24) != nil, "Bundled display font must render without fallback")
     }
     var body: some View {
-        HomeView(progression: progression, settings: settings, onPlay: { _ in })
+        HomeView(progression: progression, store: store, settings: settings, onPlay: { _ in })
             .preferredColorScheme(.dark)
             .task { if ProcessInfo.processInfo.arguments.contains("--thumbnail-audit") { await auditThumbnails() } }
             .environment(\.dynamicTypeSize, ProcessInfo.processInfo.arguments.contains("--large-text") ? .accessibility2 : .large)

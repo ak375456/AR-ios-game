@@ -231,7 +231,7 @@ struct DriveScreen: View {
                                 .font(.subheadline.weight(.heavy)).foregroundStyle(GaragePalette.success)
                         }.foregroundStyle(GaragePalette.muted)
                         ForEach(model.progression.driveMissions) { mission in
-                            PauseMissionCard(mission: mission, progress: model.progression.progress(mission))
+                            PauseMissionCard(mission: mission, progress: model.progression.progress(mission), reward: model.progression.reward(mission))
                                 .transition(.opacity.combined(with: .scale(scale: 0.94)))
                         }
                         Button { sheet = .allMissions } label: {

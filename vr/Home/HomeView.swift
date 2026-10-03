@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     let progression: ProgressionModel
+    let store: PurchaseStore
     @Bindable var settings: ControlSettings
     let onPlay: (String) -> Void
     @Environment(\.dynamicTypeSize) private var typeSize
@@ -64,9 +65,10 @@ struct HomeView: View {
         }.foregroundStyle(GaragePalette.paper)
         .sheet(item: $sheet) { item in
             switch item {
-            case .upgrades: UpgradeGarageSheet(car: car, progression: progression, settings: settings, onMissions: { sheet = nil; tab = .missions })
+            case .upgrades: UpgradeGarageSheet(car: car, progression: progression, store: store, settings: settings, onMissions: { sheet = nil; tab = .missions })
             case .paint: PaintGarageSheet(car: car, progression: progression, settings: settings)
-            case .purchase: CarPurchaseSheet(car: car, progression: progression, settings: settings)
+            case .purchase: CarPurchaseSheet(car: car, progression: progression, store: store, settings: settings)
+            case .shop: ShopSheet(store: store, progression: progression, settings: settings)
             }
         }
         .sheet(isPresented: $showingSettings) { ControlSettingsView(settings: settings) }
@@ -81,6 +83,7 @@ struct HomeView: View {
             if args.contains("--purchase") { sheet = .purchase }
             if args.contains("--upgrades") { sheet = .upgrades }
             if args.contains("--paint") { sheet = .paint }
+            if args.contains("--shop") { sheet = .shop }
             #endif
         }
     }
@@ -90,6 +93,10 @@ struct HomeView: View {
                 Text(tab == .garage ? "DRIVE" : tab.rawValue).font(GameType.display(tab == .garage ? 32 : 26)).lineLimit(1).minimumScaleFactor(0.75)
                 Spacer(minLength: 0)
                 if !typeSize.isAccessibilitySize { wallet }
+                Button { sheet = .shop } label: {
+                    Image(systemName: "bag.fill").font(.system(size: 19, weight: .bold)).frame(width: 44, height: 44)
+                        .background(GaragePalette.indigo, in: RoundedRectangle(cornerRadius: 10))
+                }.buttonStyle(.plain).accessibilityLabel("Shop")
                 Button { showingSettings = true } label: {
                     Image(systemName: "slider.horizontal.3").font(.system(size: 20, weight: .bold)).frame(width: 44, height: 44)
                         .background(GaragePalette.indigo, in: RoundedRectangle(cornerRadius: 10))
@@ -250,7 +257,7 @@ private enum GarageTab: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var icon: String { switch self { case .garage: "car.side.fill"; case .missions: "flag.checkered"; case .collection: "square.grid.2x2.fill" } }
 }
-private enum GarageSheet: String, Identifiable { case upgrades, paint, purchase; var id: String { rawValue } }
+private enum GarageSheet: String, Identifiable { case upgrades, paint, purchase, shop; var id: String { rawValue } }
 struct WalletView: View {
     let progression: ProgressionModel
     /// Overrides the balance while collected coins are still flying in.

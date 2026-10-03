@@ -8,13 +8,20 @@ private struct DriveLaunch: Identifiable {
 }
 
 struct ContentView: View {
-    @State private var progression = ProgressionModel()
+    @State private var progression: ProgressionModel
+    @State private var store: PurchaseStore
     @State private var settings = ControlSettings()
     @State private var launch: DriveLaunch?
     @State private var showSummary = false
     @State private var showTestDrive = false
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    init() {
+        let progression = ProgressionModel()
+        _progression = State(initialValue: progression)
+        _store = State(initialValue: PurchaseStore(progression: progression))
+    }
 
     var body: some View {
         ZStack {
@@ -25,7 +32,7 @@ struct ContentView: View {
                     showSummary = !progression.sessionRewards.isEmpty
                 }.id(launch.id)
             } else {
-                HomeView(progression:progression,settings:settings,onPlay:start)
+                HomeView(progression:progression,store:store,settings:settings,onPlay:start)
             }
         }.preferredColorScheme(.dark)
             .animation(reduceMotion ? nil : .easeInOut(duration:0.25),value:launch?.id)
@@ -39,6 +46,8 @@ struct ContentView: View {
                                    onSkip:{ progression.introduce(); showTestDrive = false })
             }
             .task {
+                // Owned unlocks first, so today's bonus is credited with Double Coins.
+                await store.start()
                 progression.refreshDay()
                 if progression.shouldOfferTestDrive { showTestDrive = true }
             }

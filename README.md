@@ -264,6 +264,34 @@ provide migration when changing them. Settings Reset resets layout only.
 Courses, manual occluders, AR mapping, and simulation state are session-local;
 there is no saved course library or cross-launch AR-world persistence.
 
+### In-app purchases
+
+Three one-time (non-consumable) App Store products, defined in
+`vr/Store/PurchaseStore.swift` as `PaidUnlock`. Product IDs must match App Store
+Connect exactly and can never be reused: `drivear.doublecoins` ($1.99),
+`drivear.allcars` ($4.99) and `drivear.maxupgrades` ($4.99).
+
+- `PurchaseStore` (StoreKit 2) loads prices, buys through SwiftUI's `\.purchase`,
+  restores with `AppStore.sync()`, and listens to `Transaction.updates` for Ask to
+  Buy approvals, refunds and purchases on other devices. Only verified receipts
+  unlock anything; there is no server and no receipt is sent anywhere.
+- **Double Coins** and **Max Upgrades** are never saved: `ProgressionModel` holds
+  them as `doubleCoins` / `maxUpgrades`, set from receipts at launch. Double Coins
+  multiplies every credit (mission, chapter, daily set, login bonus, road coins)
+  but never goal counts. Max Upgrades makes `parts(_:)` return `.maximum`, leaving
+  coin-bought levels untouched underneath.
+- **All Cars** is written into `owned` with an `iap.car.<id>` receipt per granted
+  car, so every ownership rule works unchanged. Only an explicitly revoked receipt
+  (a refund) calls `revokeAllCars()`, which removes just those cars. A missing
+  receipt never revokes: it can mean another Apple Account.
+- The shop (`vr/Store/ShopView.swift`) opens from the garage header's bag button.
+  `PaidUnlockCard` also appears in the Workshop (Max Upgrades) and the locked-car
+  sheet (All Cars). All Cars is never sold once the player owns every car.
+- `Config/DriveAR.storekit` is the local StoreKit test file used by the Run scheme.
+  UI fixtures: `--garage-ui-preview --shop --unlocks=doubleCoins,allCars`.
+- The public privacy policy, terms and support pages describe this behaviour
+  (repo `ak375456/ar-ios-game-privacy-policy`); update them if it changes.
+
 ### Asset tooling and verification
 
 `Tools/build_cars.py` owns the hand-authored `CARS` roster and writes bundled

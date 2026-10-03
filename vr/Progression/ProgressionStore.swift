@@ -248,7 +248,8 @@ enum DailySelector {
         return choose(0, used: excluding) ?? []
     }
 
-    static func refresh(now: Date, zone: TimeZone, save: inout ProgressionSave) throws -> String? {
+    /// `bonus` is the login grant: 10 coins, or 20 with Double Coins.
+    static func refresh(now: Date, zone: TimeZone, save: inout ProgressionSave, bonus: Int = 10) throws -> String? {
         let today = day(at:now,zone:zone)
         guard now >= save.daily.lastWall.addingTimeInterval(-300), today >= save.daily.highWater else {
             return "Daily goals return when the clock catches up. Your career is available."
@@ -262,7 +263,7 @@ enum DailySelector {
         save.pinned.removeAll { $0.hasPrefix("daily.") }
         save.daily = DailyState(day:today,zone:zone.identifier,highWater:today,lastWall:now,lastGrant:now,
                                 slots:choices(day:today),rerolled:false,chapter:save.chapter)
-        try Economy.grant(id:"login.\(today)",title:"Daily bonus +10",coins:10,now:now,save:&save)
+        try Economy.grant(id:"login.\(today)",title:"Daily bonus +\(bonus)",coins:bonus,now:now,save:&save)
         return nil
     }
 }

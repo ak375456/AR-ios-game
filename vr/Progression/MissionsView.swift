@@ -36,6 +36,8 @@ extension MissionDefinition {
 struct PauseMissionCard: View {
     let mission: MissionDefinition
     let progress: MissionProgress
+    /// The credited reward, which includes Double Coins.
+    let reward: Int
     private var accent: Color { progress.completed ? GaragePalette.success : GaragePalette.neon }
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -56,7 +58,7 @@ struct PauseMissionCard: View {
                     Text(mission.formatted(progress.value)).font(.subheadline.weight(.heavy)).monospacedDigit()
                 }
                 Spacer(minLength: 0)
-                CoinLabel(amount: mission.reward, iconColor: GaragePalette.amberBottom)
+                CoinLabel(amount: reward, iconColor: GaragePalette.amberBottom)
             }
         }.padding(14).foregroundStyle(GaragePalette.midnight)
             .background(GaragePalette.paper, in: RoundedRectangle(cornerRadius: 14))
@@ -150,7 +152,7 @@ struct MissionsView: View {
                         Text(mission.shortObjective).font(GameType.display(30))
                         Text(mission.objective).font(.body)
                         if !mission.steps.isEmpty { Text("Follow the lit markers in order.").font(.subheadline).foregroundStyle(GaragePalette.muted) }
-                        HStack { CoinLabel(amount: mission.reward); if mission.mode == .career { Label("1", systemImage: "star.fill").foregroundStyle(GaragePalette.neon) } }
+                        HStack { CoinLabel(amount: progression.reward(mission)); if mission.mode == .career { Label("1", systemImage: "star.fill").foregroundStyle(GaragePalette.neon) } }
                         if progression.progress(mission).completed {
                             Label("Reward received", systemImage: "checkmark.circle.fill").foregroundStyle(GaragePalette.success)
                         }
@@ -213,7 +215,7 @@ struct MissionsView: View {
                 rowLayout {
                     Text(mission.formatted(progress.value)).font(.caption.weight(.bold)).monospacedDigit()
                     Spacer(minLength: 4)
-                    CoinLabel(amount: mission.reward).font(.caption)
+                    CoinLabel(amount: progression.reward(mission)).font(.caption)
                     if mission.mode == .career { Label("1", systemImage: "star.fill").font(.caption.weight(.bold)).foregroundStyle(Color(red: 0.08, green: 0.4, blue: 0.5)) }
                     if !eligible { Image(systemName: "lock.fill").accessibilityLabel("Locked") }
                     else if mission.requiresCourse {

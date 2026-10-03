@@ -103,6 +103,7 @@ import simd
         detectorChecks()
         try everydayDrivingChecks()
         additionalChecks()
+        try paidUnlockChecks()
         try everydayTechniqueChecks()
         print("\(checks-failures)/\(checks) progression checks passed")
         if failures > 0 { exit(1) }

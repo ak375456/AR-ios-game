@@ -1,0 +1,68 @@
+{
+  "identifier" : "4D1A7E2C",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "6739000001",
+      "localizations" : [
+        {
+          "description" : "Every coin you earn counts twice, forever.",
+          "displayName" : "Double Coins",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "drivear.doublecoins",
+      "referenceName" : "Double Coins",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "6739000002",
+      "localizations" : [
+        {
+          "description" : "All 28 cars unlocked straight away.",
+          "displayName" : "All Cars",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "drivear.allcars",
+      "referenceName" : "All Cars",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "6739000003",
+      "localizations" : [
+        {
+          "description" : "Every part on every car at max level, including cars unlocked later.",
+          "displayName" : "Max Upgrades",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "drivear.maxupgrades",
+      "referenceName" : "Max Upgrades",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

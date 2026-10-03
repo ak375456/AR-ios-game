@@ -239,7 +239,8 @@ final class ARDriveController: NSObject {
         super.init()
         roadCoins.onCollect = { [weak self] coins, rare in
             guard let self, self.progression.collectRoadCoins(coins, carID: self.car.id) else { return }
-            self.onRoadCoin?(coins, rare)
+            // The HUD shows what was credited, so Double Coins is visible as it happens.
+            self.onRoadCoin?(coins * self.progression.coinMultiplier, rare)
         }
         roadCoins.onMiss = { [weak self] in
             guard let self else { return }
