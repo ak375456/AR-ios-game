@@ -417,7 +417,7 @@ font installed on the developer's Mac. Simulator fixtures assert font availabili
 
 The Garage stage uses native shapes and one live SceneKit preview. Collection
 uses `CarThumbnailCache`: actual models rendered on demand into still images,
-16 MB NSCache plus recreatable disk cache (`CarThumbnails-v3`), no live SceneKit
+16 MB NSCache plus recreatable disk cache (`CarThumbnails-v4`), no live SceneKit
 view per tile. SceneKit model parsing stays on the main actor; each thumbnail's
 scene is released after its snapshot. Increment cache version when framing or
 assets change. Tall models are scaled using height as well as ground footprint.
@@ -514,10 +514,16 @@ hand-authored part of the roster lives.
 Cars are named after their source models, because generic names made it look
 like models were missing from the roster.
 
-> **Before a public release:** several models depict real, trademarked vehicles
-> and some textures carry manufacturer badges. The Creative Commons licences
-> cover the 3D models, not the manufacturers' trade marks, and the in-game names
-> now use the marques. Clear this properly before shipping publicly.
+> **Brand badges removed (3 October 2026).** In-game names are generic, and the
+> bundled USDZ files were edited after conversion to remove manufacturer marks:
+> Pony Coupe (`chevrolet_logo`, `chevrolet_logo_2` and their two materials),
+> Muscle Coupe (`geo_5`, the yellow bowties, and `mat12`), Rotary Coupe (`Logos`:
+> "mazda"/"RX-7"), Grand Tourer (BMW roundels on bonnet, wheel and steering wheel
+> painted out; the twin-kidney grille joined into one wide grille) and Apex GT
+> (Lamborghini shield painted out). `GrandTourerPaint.png` and `SupercarPaint.jpg`
+> carry the same edits. **Re-running `build_cars.py` restores the badges**, so
+> re-apply these edits after any rebuild. Several shapes still resemble real
+> vehicles; keep names and badges generic.
 
 ### The pipeline
 

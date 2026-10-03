@@ -9,8 +9,10 @@ import UIKit
     private let directory: URL
     init() {
         memory.totalCostLimit = 16 * 1024 * 1024
-        directory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("CarThumbnails-v3")
+        let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        // v4: brand badges were removed from five models, so older thumbnails are stale.
+        directory = caches.appendingPathComponent("CarThumbnails-v4")
+        try? FileManager.default.removeItem(at: caches.appendingPathComponent("CarThumbnails-v3"))
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     }
     func image(for car: CarDefinition) async -> UIImage? {
