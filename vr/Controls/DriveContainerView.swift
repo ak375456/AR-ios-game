@@ -53,7 +53,7 @@ struct DriveContainerView: View {
             BlockerView(
                 symbol: "arkit",
                 title: "AR isn't available here",
-                message: "This iPhone doesn't support the world tracking the game needs. Drive AR requires iOS 18 or later and ARKit world tracking.",
+                message: "This iPhone doesn't support the world tracking the game needs. Drift Anywhere requires iOS 18 or later and ARKit world tracking.",
                 actionTitle: "Back to the garage",
                 action: onExit
             )

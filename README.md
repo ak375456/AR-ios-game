@@ -18,7 +18,9 @@ The app/project folder is `vr/` inside the workspace. Paths and commands in
 this README are relative to that project folder, which contains this file,
 `vr.xcodeproj`, `Tools/`, and the inner `vr/` source/resource directory.
 
-- Product/display name: **Drive AR**. Xcode project, target, and scheme: `vr`.
+- App Store name: **Drift Anywhere: AR Cars**; Home Screen display name: **Drift Anywhere**
+  (renamed from "Drive AR" so the device name matches the store, guideline 2.3.8).
+  "Drive AR" remains the project's internal name. Xcode project, target, and scheme: `vr`.
 - App icon: the supplied yellow drifting car artwork in
   `vr/Assets.xcassets/AppIcon.appiconset/AppIcon.png`, resized to an opaque
   1024 × 1024 PNG. iOS applies the icon shape and appearance treatments.

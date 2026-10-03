@@ -257,8 +257,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Config/FontInfo.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Drive AR";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Drive AR uses the rear camera to show the room around you, so the car can be placed on your floor and driven in it.";
+				INFOPLIST_KEY_CFBundleDisplayName = "Drift Anywhere";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Drift Anywhere uses the rear camera to show the room around you, so the car can be placed on your floor and driven in it.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Photos and videos you capture of the car are saved straight to your photo library. The app never reads your existing photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -292,8 +292,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Config/FontInfo.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Drive AR";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Drive AR uses the rear camera to show the room around you, so the car can be placed on your floor and driven in it.";
+				INFOPLIST_KEY_CFBundleDisplayName = "Drift Anywhere";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Drift Anywhere uses the rear camera to show the room around you, so the car can be placed on your floor and driven in it.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Photos and videos you capture of the car are saved straight to your photo library. The app never reads your existing photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
