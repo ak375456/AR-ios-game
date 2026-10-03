@@ -39,6 +39,40 @@ struct GlassCircleButton: View {
     }
 }
 
+/// The same glass chrome with a short word beside the icon, for an action whose
+/// symbol alone would be ambiguous. Drops to icon-only when its slot is narrow.
+struct GlassLabelButton: View {
+
+    let title: String
+    let systemImage: String
+    var accessibilityLabel: String
+    var height: CGFloat = 44
+    var isEnabled: Bool = true
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 6) {
+                    Image(systemName: systemImage).font(.system(size: 16, weight: .bold))
+                    Text(title).font(.subheadline.weight(.bold)).lineLimit(1)
+                }.padding(.horizontal, 12)
+                Image(systemName: systemImage).font(.system(size: height * 0.42, weight: .medium))
+            }
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity, minHeight: height, maxHeight: height)
+            .background(GaragePalette.midnight.opacity(0.88), in: RoundedRectangle(cornerRadius: 12))
+            .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(GaragePalette.paper.opacity(0.3), lineWidth: 1.5))
+            .contentShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .buttonStyle(PressableButtonStyle())
+        .disabled(!isEnabled)
+        .opacity(isEnabled ? 1 : 0.4)
+        .dynamicTypeSize(...DynamicTypeSize.large)
+        .accessibilityLabel(accessibilityLabel)
+    }
+}
+
 /// The floating status line above the scene.
 struct GuidancePill: View {
 

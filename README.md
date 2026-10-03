@@ -78,8 +78,11 @@ exact scope. A successful build is not evidence of AR tracking or driving feel.
    knocked props. Reposition picks up the car while retaining an existing course.
    One top-left pause button opens three mission cards, with fixed Resume and
    Garage actions. All missions opens Career/Daily/Mastery inside the same sheet.
-   Tools holds reset, course editing, capture and Clean view. Clean view hides the
-   instruments and menu, leaving an eye button to restore them. No mission HUD.
+   A small labelled Reset button sits beside pause while driving (no confirmation).
+   Every pause page has one fixed row above Resume: Move car, Build/Edit course
+   and Clean view. Tools holds capture and the optional Real objects editor. Clean
+   view hides the instruments, Reset and menu, leaving an eye button to restore
+   them. No mission HUD.
    Recording stop and essential tracking/countdown feedback remain available.
    Control settings live in the garage, not over the driving controls.
    **Road coins** (`vr/Progression/RoadCoins.swift`): during free drive with an
@@ -339,7 +342,7 @@ temporary layouts, and validates restored prop support points against the
 current floor. Loss of the anchor retains that snapshot for this session and
 asks for placement again. A 10 cm floor grid covers the entire generated
 layout. Compact reduces layout spacing, never car or simulation scale.
-`DriveOverlayLayout` places one menu button, compact instruments and essential
+`DriveOverlayLayout` places one menu button, the Reset button, compact instruments and essential
 status using the real control rectangles plus UIKit touch slop. Tracking warnings
 receive space before optional instruments. Scanning has only Back and guidance;
 editors own their own tools. Opening pause releases input and suspends scoring

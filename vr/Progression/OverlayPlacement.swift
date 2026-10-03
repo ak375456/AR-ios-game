@@ -31,6 +31,8 @@ enum OverlayPlacement {
 /// and manual shifter. Optional panels yield space before a control is obscured.
 struct DriveOverlayLayout {
     var toolbar: CGRect?
+    /// Reset car, beside the pause button. Icon-only when only 44 points fit.
+    var reset: CGRect?
     var instruments: CGRect?
     var status: CGRect?
     var goal: CGRect?
@@ -40,7 +42,7 @@ struct DriveOverlayLayout {
 
     init(size: CGSize, controls: [CGRect], focused: Bool, instrumentSize: CGSize?,
          instrumentY: CGFloat, showsStatus: Bool, showsGoal: Bool, statusHeight: CGFloat = 76,
-         showsCoins: Bool = false) {
+         showsCoins: Bool = false, showsReset: Bool = false) {
         var occupied = controls
         toolbar = OverlayPlacement.find(in: size, avoiding: occupied,
             preferred: CGSize(width: 44, height: 44),
@@ -51,6 +53,13 @@ struct DriveOverlayLayout {
                 preferred: CGSize(width: 116, height: 44),
                 near: CGPoint(x: size.width - 66, y: 30), fallback: nil)
             if let coins { occupied.append(coins) }
+        }
+        if showsReset, let toolbar {
+            let width: CGFloat = 92
+            reset = OverlayPlacement.find(in: size, avoiding: occupied,
+                preferred: CGSize(width: width, height: 44),
+                near: CGPoint(x: toolbar.maxX + 12 + width / 2, y: toolbar.midY))
+            if let reset { occupied.append(reset) }
         }
         if showsStatus {
             status = OverlayPlacement.find(in: size, avoiding: occupied,

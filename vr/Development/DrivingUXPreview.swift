@@ -103,7 +103,7 @@ struct GarageUXPreview: View {
     static func record(size: CGSize, layout: DriveOverlayLayout, settings: ControlSettings, driving: Bool, editing: Bool) {
         let visible: [CGRect] = driving ? ControlKind.allCases.filter { !$0.isManualOnly || settings.transmissionMode == .manual }
             .map { settings.layout.frame(for: $0, in: size) } : []
-        let panels = editing ? [] : [layout.toolbar, layout.status, layout.instruments].compactMap { $0 }
+        let panels = editing ? [] : [layout.toolbar, layout.reset, layout.status, layout.instruments].compactMap { $0 }
         precondition(layout.goal == nil, "Driving must never display mission panels")
         precondition(panels.allSatisfy { p in visible.allSatisfy { !$0.intersects(p) } }, "HUD must avoid controls")
         let area = (visible + panels).reduce(CGFloat(0)) { $0 + $1.width * $1.height }

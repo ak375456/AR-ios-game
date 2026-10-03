@@ -50,6 +50,13 @@ struct DriveScreen: View {
                     .frame(width: frame.width, height: frame.height)
                     .position(x: frame.midX, y: frame.midY)
                 }
+                if let frame = placement.reset {
+                    GlassLabelButton(title: "Reset", systemImage: "arrow.counterclockwise",
+                        accessibilityLabel: "Reset car to where you placed it", action: model.resetCar)
+                        .frame(width: frame.width, height: frame.height)
+                        .position(x: frame.midX, y: frame.midY)
+                        .transition(.opacity)
+                }
                 if let frame = placement.instruments {
                     InstrumentCluster(instruments: model.instruments,
                         style: placement.compactInstruments ? .digital : model.settings.instrumentStyle,
@@ -131,7 +138,8 @@ struct DriveScreen: View {
             showsStatus: showsStatus && !isEditing,
             showsGoal: false,
             statusHeight: model.capture.isRecording && (model.guidance != nil || model.challenges.phase == .countdown) ? 112 : 76,
-            showsCoins: isDriving && !focused)
+            showsCoins: isDriving && !focused,
+            showsReset: isDriving && !focused)
     }
 
     private var editorHeader: some View {
@@ -237,26 +245,51 @@ struct DriveScreen: View {
                 }
                 .task(id: sheet) { await swapCompletedMissions() }
             }
-            HStack(spacing: 12) {
-                Button { performAfterSheet(onExit) } label: { Text("Garage").frame(maxWidth: .infinity) }
-                    .buttonStyle(GameButtonStyle())
-                Button(action: resume) { Label("Resume", systemImage: "play.fill").frame(maxWidth: .infinity) }
-                    .buttonStyle(AmberActionStyle())
+            VStack(spacing: 14) {
+                quickActions
+                HStack(spacing: 12) {
+                    Button { performAfterSheet(onExit) } label: { Text("Garage").frame(maxWidth: .infinity) }
+                        .buttonStyle(GameButtonStyle())
+                    Button(action: resume) { Label("Resume", systemImage: "play.fill").frame(maxWidth: .infinity) }
+                        .buttonStyle(AmberActionStyle())
+                }
             }.padding(18).background(GaragePalette.deepIndigo)
         }.buttonStyle(.plain).foregroundStyle(GaragePalette.paper).background(GaragePalette.midnight)
     }
 
+    /// One row of small scene actions above Resume, on every pause page.
+    /// Reset car lives on the driving screen itself.
+    private var quickActions: some View {
+        HStack(spacing: 10) {
+            quickAction("Move car", icon: "move.3d", enabled: model.isCarPlaced,
+                hint: "Pick the car up and place it somewhere else") { performAfterSheet(model.repositionCar) }
+            quickAction(model.course.count > 0 ? "Edit course" : "Build course", icon: "cone.fill", enabled: model.canBuildCourse,
+                hint: "Place cones, barriers and tyres around the car") { performAfterSheet(model.startCourseEditing) }
+            quickAction("Clean view", icon: "eye.slash",
+                hint: "Hide the driving interface. Tap the eye to bring it back") { performAfterSheet { focused = true } }
+        }
+    }
+    private func quickAction(_ title: String, icon: String, enabled: Bool = true, hint: String,
+                             action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(spacing: 5) {
+                Image(systemName: icon).font(.system(size: 18, weight: .bold)).foregroundStyle(GaragePalette.neon)
+                    .frame(height: 22)
+                Text(title).font(GameType.display(15, relativeTo: .footnote))
+                    .lineLimit(1).minimumScaleFactor(0.7)
+            }.frame(maxWidth: .infinity).padding(.vertical, 8)
+        }
+        .buttonStyle(GameButtonStyle(compact: true))
+        .disabled(!enabled)
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
+        .accessibilityHint(hint)
+    }
+
     private var tools: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("SET THE SCENE").font(.caption.weight(.heavy)).foregroundStyle(GaragePalette.muted)
-            VStack(spacing: 2) {
-                tool("Reset car", icon: "arrow.counterclockwise", enabled: model.isCarPlaced) { performAfterSheet(model.resetCar) }
-                tool("Move car", icon: "move.3d", enabled: model.isCarPlaced) { performAfterSheet(model.repositionCar) }
-                tool(model.course.count > 0 ? "Edit course" : "Build course", icon: "cone.fill", enabled: model.canBuildCourse) { performAfterSheet(model.startCourseEditing) }
-                if model.settings.showsOccluderTool {
-                    tool("Real objects", icon: "cube.transparent", enabled: !model.capture.isRecording) { performAfterSheet { model.setOccluderEditing(true) } }
-                }
-                tool("Clean view", icon: "eye.slash") { performAfterSheet { focused = true } }
+            if model.settings.showsOccluderTool {
+                Text("SET THE SCENE").font(.caption.weight(.heavy)).foregroundStyle(GaragePalette.muted)
+                tool("Real objects", icon: "cube.transparent", enabled: !model.capture.isRecording) { performAfterSheet { model.setOccluderEditing(true) } }
             }
             Text("CAPTURE").font(.caption.weight(.heavy)).foregroundStyle(GaragePalette.muted)
             HStack(spacing: 12) {
